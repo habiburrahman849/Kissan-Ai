@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kissan AI - Profile</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.profile-edit-input{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;color:var(--text-primary);background:var(--bg-page);transition:var(--transition)}
+.profile-edit-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,211,102,0.15)}
+.profile-edit-btn-inline{padding:6px 14px;background:var(--primary);color:white;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:var(--transition);font-family:inherit}
+.profile-edit-btn-inline:hover{background:var(--primary-dark)}
+.profile-edit-btn-inline.cancel{background:var(--text-muted)}
+.profile-edit-btn-inline.cancel:hover{background:var(--text-secondary)}
+.profile-actions{display:flex;gap:8px;margin-top:12px}
+.info-row-edit{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-light);gap:12px}
+.info-row-edit:last-child{border-bottom:none}
+.info-row-edit label{font-size:13px;color:var(--text-secondary);min-width:120px;font-weight:500}
+.info-row-edit input,.info-row-edit select{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;color:var(--text-primary);background:var(--bg-page)}
+.info-row-edit input:focus,.info-row-edit select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,211,102,0.15)}
+</style>
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell" id="appShell">
+<aside class="sidebar open" id="sidebar">
+<div class="sidebar-header">
+<div class="brand"><div class="brand-icon"><i class="fas fa-seedling"></i></div><div class="brand-text">Kissan AI</div></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-title">Main</div>
+<a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i><span>Chat</span><span class="nav-badge">3</span></a>
+<a href="weather.html" class="nav-item"><i class="fas fa-cloud-sun"></i><span>Weather</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Account</div>
+<a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+<a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Support</div>
+<a href="help.html" class="nav-item"><i class="fas fa-question-circle"></i><span>Help</span></a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a href="profile.html" class="user-mini" style="text-decoration:none">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Ahmad">
+<div class="user-mini-info"><div class="user-mini-name">Ahmad</div><div class="user-mini-role">Premium Farmer</div></div>
+<i class="fas fa-chevron-right" style="color:var(--text-muted);font-size:12px"></i>
+</a>
+</div>
+<div class="sidebar-drag-handle" id="sidebarDragHandle"><button class="sidebar-arrow" id="sidebarArrow" onclick="toggleSidebar()"><i class="fas fa-chevron-left" id="sidebarArrowIcon"></i></button></div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<header class="top-header">
+<div class="header-left">
+<button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+<div>
+<h1 class="page-title">Profile</h1>
+<p class="page-subtitle">Your farming profile</p>
+</div>
+</div>
+<div class="header-actions">
+<button class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="headerThemeIcon"></i></button>
+<button class="header-btn" style="position:relative"><i class="fas fa-bell"></i><span class="dot"></span></button>
+</div>
+</header>
+
+<div class="content-area">
+<div class="profile-header">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face" class="profile-avatar-large" alt="Ahmad">
+<div class="profile-info">
+<div class="profile-name">Ahmad</div>
+<div class="profile-location"><i class="fas fa-map-marker-alt"></i>Village Rustam, District Mardan, KP, Pakistan</div>
+<div class="profile-badges">
+<div class="profile-badge"><i class="fas fa-star" style="margin-right:4px"></i>Premium</div>
+<div class="profile-badge"><i class="fas fa-shield-alt" style="margin-right:4px"></i>Verified</div>
+</div>
+</div>
+</div>
+<div class="profile-stats-row">
+<div class="profile-stat-box"><div class="profile-stat-value">24</div><div class="profile-stat-label">Questions Asked</div></div>
+<div class="profile-stat-box"><div class="profile-stat-value">12</div><div class="profile-stat-label">Crops Scanned</div></div>
+<div class="profile-stat-box"><div class="profile-stat-value">156</div><div class="profile-stat-label">Advisories</div></div>
+<div class="profile-stat-box"><div class="profile-stat-value">5.2</div><div class="profile-stat-label">Acres Managed</div></div>
+</div>
+<div class="profile-grid">
+<!-- Personal Information -->
+<div class="card">
+<div class="card-header"><div class="card-icon blue"><i class="fas fa-user"></i></div><div class="card-title">Personal Information</div><button class="profile-edit-btn-inline" id="personalEditBtn" onclick="toggleEdit('personal')" style="margin-left:auto"><i class="fas fa-edit"></i> Edit</button></div>
+<div class="card-body" id="personalView">
+<div class="info-row"><span class="info-label">Full Name</span><span class="info-value">Ahmad</span></div>
+<div class="info-row"><span class="info-label">Phone</span><span class="info-value">+92 300 1234567</span></div>
+<div class="info-row"><span class="info-label">Email</span><span class="info-value">ahmad@kissan.ai</span></div>
+<div class="info-row"><span class="info-label">Location</span><span class="info-value">Rustam, Mardan</span></div>
+<div class="info-row"><span class="info-label">Member Since</span><span class="info-value">Jan 2025</span></div>
+</div>
+<div class="card-body" id="personalEdit" style="display:none">
+<div class="info-row-edit"><label>Full Name</label><input type="text" id="personalName" value="Ahmad"></div>
+<div class="info-row-edit"><label>Phone</label><input type="tel" id="personalPhone" value="+92 300 1234567"></div>
+<div class="info-row-edit"><label>Email</label><input type="email" id="personalEmail" value="ahmad@kissan.ai"></div>
+<div class="info-row-edit"><label>Location</label><input type="text" id="personalLocation" value="Rustam, Mardan"></div>
+<div class="info-row-edit"><label>Member Since</label><input type="text" value="Jan 2025" readonly style="background:var(--border-light);cursor:not-allowed"></div>
+<div class="profile-actions">
+<button class="profile-edit-btn-inline" onclick="saveProfile('personal')"><i class="fas fa-check"></i> Save</button>
+<button class="profile-edit-btn-inline cancel" onclick="toggleEdit('personal')"><i class="fas fa-times"></i> Cancel</button>
+</div>
+</div>
+</div>
+<!-- Farm Details -->
+<div class="card">
+<div class="card-header"><div class="card-icon green"><i class="fas fa-tractor"></i></div><div class="card-title">Farm Details</div><button class="profile-edit-btn-inline" id="farmEditBtn" onclick="toggleEdit('farm')" style="margin-left:auto"><i class="fas fa-edit"></i> Edit</button></div>
+<div class="card-body" id="farmView">
+<div class="info-row"><span class="info-label">Land Size</span><span class="info-value">5.2 Acres</span></div>
+<div class="info-row"><span class="info-label">Primary Crops</span><span class="info-value">Wheat, Cotton, Rice</span></div>
+<div class="info-row"><span class="info-label">Soil Type</span><span class="info-value">Sandy Loam</span></div>
+<div class="info-row"><span class="info-label">Irrigation</span><span class="info-value">Canal & Tube Well</span></div>
+<div class="info-row"><span class="info-label">Farming Type</span><span class="info-value">Organic</span></div>
+</div>
+<div class="card-body" id="farmEdit" style="display:none">
+<div class="info-row-edit"><label>Land Size</label><input type="text" id="farmLandSize" value="5.2 Acres"></div>
+<div class="info-row-edit"><label>Primary Crops</label><input type="text" id="farmCrops" value="Wheat, Cotton, Rice"></div>
+<div class="info-row-edit"><label>Soil Type</label><input type="text" id="farmSoil" value="Sandy Loam"></div>
+<div class="info-row-edit"><label>Irrigation</label><select id="farmIrrigation"><option>Canal & Tube Well</option><option>Tube Well</option><option>Canal</option><option>Drip System</option><option>Rain-fed</option></select></div>
+<div class="info-row-edit"><label>Farming Type</label><select id="farmType"><option>Organic</option><option>Conventional</option><option>Natural</option><option>Mixed</option></select></div>
+<div class="profile-actions">
+<button class="profile-edit-btn-inline" onclick="saveProfile('farm')"><i class="fas fa-check"></i> Save</button>
+<button class="profile-edit-btn-inline cancel" onclick="toggleEdit('farm')"><i class="fas fa-times"></i> Cancel</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<script src="shared.js"></script>
+<script>
+function toggleEdit(type) {
+  var view = document.getElementById(type + 'View');
+  var edit = document.getElementById(type + 'Edit');
+  var btn = document.getElementById(type + 'EditBtn');
+  if (view.style.display === 'none') {
+    view.style.display = 'block';
+    edit.style.display = 'none';
+    btn.innerHTML = '<i class="fas fa-edit"></i> Edit';
+  } else {
+    view.style.display = 'none';
+    edit.style.display = 'block';
+    btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+  }
+}
+
+function saveProfile(type) {
+  saveFarmerProfile(type);
+  toggleEdit(type);
+}
+</script>
+</body>
+</html>

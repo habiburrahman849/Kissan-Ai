@@ -1,0 +1,6 @@
+backend/.env
+backend/.venv/
+backend/kissan_ai.db
+backend/*.log
+backend/__pycache__/
+backend/app/**/__pycache__/

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kissan AI - Settings</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell" id="appShell">
+<aside class="sidebar open" id="sidebar">
+<div class="sidebar-header">
+<div class="brand"><div class="brand-icon"><i class="fas fa-seedling"></i></div><div class="brand-text">Kissan AI</div></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-title">Main</div>
+<a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i><span>Chat</span><span class="nav-badge">3</span></a>
+<a href="weather.html" class="nav-item"><i class="fas fa-cloud-sun"></i><span>Weather</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Account</div>
+<a href="settings.html" class="nav-item active"><i class="fas fa-cog"></i><span>Settings</span></a>
+<a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Support</div>
+<a href="help.html" class="nav-item"><i class="fas fa-question-circle"></i><span>Help</span></a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a href="profile.html" class="user-mini" style="text-decoration:none">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Ahmad">
+<div class="user-mini-info"><div class="user-mini-name">Ahmad</div><div class="user-mini-role">Premium Farmer</div></div>
+<i class="fas fa-chevron-right" style="color:var(--text-muted);font-size:12px"></i>
+</a>
+</div>
+<div class="sidebar-drag-handle" id="sidebarDragHandle"><button class="sidebar-arrow" id="sidebarArrow" onclick="toggleSidebar()"><i class="fas fa-chevron-left" id="sidebarArrowIcon"></i></button></div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<header class="top-header">
+<div class="header-left">
+<button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+<div>
+<h1 class="page-title">Settings</h1>
+<p class="page-subtitle">Manage your preferences</p>
+</div>
+</div>
+<div class="header-actions">
+<button class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="headerThemeIcon"></i></button>
+<button class="header-btn" style="position:relative"><i class="fas fa-bell"></i><span class="dot"></span></button>
+</div>
+</header>
+
+<div class="content-area">
+<div class="settings-grid">
+<!-- Alert Preferences -->
+<div class="card">
+<div class="card-header"><div class="card-icon green"><i class="fas fa-bell"></i></div><div><div class="card-title">Alert Preferences</div><div class="card-subtitle">Choose which alerts you want to receive</div></div></div>
+<div class="card-body">
+<div class="setting-row"><div class="setting-info"><div class="setting-icon weather"><i class="fas fa-cloud-sun"></i></div><div class="setting-text"><div class="setting-label">Weather Alerts</div><div class="setting-desc">Receive storm and rainfall warnings</div></div></div><label class="toggle-switch"><input type="checkbox" checked onchange="showToast('Weather alerts updated','success')"><span class="toggle-slider"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-icon price"><i class="fas fa-chart-line"></i></div><div class="setting-text"><div class="setting-label">Price Alerts</div><div class="setting-desc">Notify when crop rates change by 5%</div></div></div><label class="toggle-switch"><input type="checkbox" checked onchange="showToast('Price alerts updated','success')"><span class="toggle-slider"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-icon pest"><i class="fas fa-bug"></i></div><div class="setting-text"><div class="setting-label">Pest Warnings</div><div class="setting-desc">Regional outbreak alerts for your crops</div></div></div><label class="toggle-switch"><input type="checkbox" onchange="showToast('Pest warnings updated','success')"><span class="toggle-slider"></span></label></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-icon advisory"><i class="fas fa-leaf"></i></div><div class="setting-text"><div class="setting-label">Farming Advisories</div><div class="setting-desc">Daily tips and seasonal recommendations</div></div></div><label class="toggle-switch"><input type="checkbox" checked onchange="showToast('Advisories updated','success')"><span class="toggle-slider"></span></label></div>
+</div>
+</div>
+
+<!-- Language -->
+<div class="card">
+<div class="card-header"><div class="card-icon blue"><i class="fas fa-globe"></i></div><div><div class="card-title">Language</div><div class="card-subtitle">Customize your experience</div></div></div>
+<div class="card-body">
+<div class="setting-row"><div class="setting-info"><div class="setting-icon" style="background:#E8F5E9;color:var(--success)"><i class="fas fa-language"></i></div><div class="setting-text"><div class="setting-label">App Language</div><div class="setting-desc">Interface language for the app</div></div></div><div class="select-wrapper"><select onchange="saveLanguagePreference(this.value)"><option value="Urdu" selected>Urdu (اردو)</option><option value="Hinglish">Hinglish / Roman Urdu</option><option value="English">English</option></select></div></div>
+<div class="setting-row"><div class="setting-info"><div class="setting-icon" style="background:#FFF3E0;color:var(--warning)"><i class="fas fa-microphone"></i></div><div class="setting-text"><div class="setting-label">Voice Assistance</div><div class="setting-desc">Language for voice commands</div></div></div><div class="select-wrapper"><select><option value="Urdu" selected>Urdu (اردو)</option><option value="Hinglish">Hinglish / Roman Urdu</option><option value="English">English</option></select></div></div>
+</div>
+</div>
+</div>
+
+<div style="text-align:center;padding:32px 0;color:var(--text-muted);font-size:12px">Kissan AI v2.1.0 · Made with <i class="fas fa-heart" style="color:var(--error)"></i> for Pakistani Farmers</div>
+</div>
+</main>
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>

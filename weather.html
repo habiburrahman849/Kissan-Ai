@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kissan AI - Weather</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell" id="appShell">
+<aside class="sidebar open" id="sidebar">
+<div class="sidebar-header">
+<div class="brand"><div class="brand-icon"><i class="fas fa-seedling"></i></div><div class="brand-text">Kissan AI</div></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-title">Main</div>
+<a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i><span>Chat</span><span class="nav-badge">3</span></a>
+<a href="weather.html" class="nav-item active"><i class="fas fa-cloud-sun"></i><span>Weather</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Account</div>
+<a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+<a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Support</div>
+<a href="help.html" class="nav-item"><i class="fas fa-question-circle"></i><span>Help</span></a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a href="profile.html" class="user-mini" style="text-decoration:none">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Ahmad">
+<div class="user-mini-info"><div class="user-mini-name">Ahmad</div><div class="user-mini-role">Premium Farmer</div></div>
+<i class="fas fa-chevron-right" style="color:var(--text-muted);font-size:12px"></i>
+</a>
+</div>
+<div class="sidebar-drag-handle" id="sidebarDragHandle"><button class="sidebar-arrow" id="sidebarArrow" onclick="toggleSidebar()"><i class="fas fa-chevron-left" id="sidebarArrowIcon"></i></button></div>
+</aside>
+
+<main class="main-content" id="mainContent">
+<header class="top-header">
+<div class="header-left">
+<button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+<div>
+<h1 class="page-title">Weather</h1>
+<p class="page-subtitle">Forecast & farming advisories</p>
+</div>
+</div>
+<div class="header-actions">
+<button class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="headerThemeIcon"></i></button>
+<button class="header-btn" style="position:relative"><i class="fas fa-bell"></i><span class="dot"></span></button>
+</div>
+</header>
+
+<div class="content-area">
+<div class="weather-hero">
+<div class="weather-main">
+<div style="font-size:48px"><i class="fas fa-sun" style="color:#FFD700"></i></div>
+<div>
+<div class="weather-temp">32°C</div>
+<div class="weather-condition">Sunny with light breeze</div>
+<div class="weather-location"><i class="fas fa-map-marker-alt"></i>Mardan, Pakistan</div>
+</div>
+</div>
+<div class="weather-details">
+<div class="weather-detail-item"><div class="weather-detail-value">65%</div><div class="weather-detail-label">Humidity</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">12km/h</div><div class="weather-detail-label">Wind</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">0mm</div><div class="weather-detail-label">Rainfall</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">1012hPa</div><div class="weather-detail-label">Pressure</div></div>
+</div>
+</div>
+<div class="forecast-grid">
+<div class="forecast-card"><div class="forecast-day">Mon</div><div class="forecast-icon">☀️</div><div class="forecast-temp">33°</div><div class="forecast-range">28° / 35°</div><div class="forecast-rain"><i class="fas fa-tint"></i>0%</div></div>
+<div class="forecast-card"><div class="forecast-day">Tue</div><div class="forecast-icon">⛅</div><div class="forecast-temp">31°</div><div class="forecast-range">27° / 33°</div><div class="forecast-rain"><i class="fas fa-tint"></i>10%</div></div>
+<div class="forecast-card"><div class="forecast-day">Wed</div><div class="forecast-icon">🌧️</div><div class="forecast-temp">28°</div><div class="forecast-range">24° / 30°</div><div class="forecast-rain"><i class="fas fa-tint"></i>80%</div></div>
+<div class="forecast-card"><div class="forecast-day">Thu</div><div class="forecast-icon">🌦️</div><div class="forecast-temp">29°</div><div class="forecast-range">25° / 31°</div><div class="forecast-rain"><i class="fas fa-tint"></i>45%</div></div>
+<div class="forecast-card"><div class="forecast-day">Fri</div><div class="forecast-icon">☀️</div><div class="forecast-temp">34°</div><div class="forecast-range">29° / 36°</div><div class="forecast-rain"><i class="fas fa-tint"></i>0%</div></div>
+</div>
+<div class="advisory-list">
+<div class="advisory-card"><div class="advisory-icon green"><i class="fas fa-leaf"></i></div><div class="advisory-content"><div class="advisory-title">🌾 Wheat: Ideal Sowing Conditions</div><div class="advisory-text">Soil moisture at 65%. Perfect for rice transplantation! Consider covering your harvested crops.</div><div class="advisory-time">Updated 2 hours ago</div></div></div>
+<div class="advisory-card"><div class="advisory-icon orange"><i class="fas fa-exclamation-triangle"></i></div><div class="advisory-content"><div class="advisory-title">🍅 Tomato: Delay Spraying</div><div class="advisory-text">Wind speed expected to exceed 15km/h. Postpone pesticide application until tomorrow morning.</div><div class="advisory-time">Updated 4 hours ago</div></div></div>
+<div class="advisory-card"><div class="advisory-icon blue"><i class="fas fa-tint"></i></div><div class="advisory-content"><div class="advisory-title">💧 Irrigation: Skip Today</div><div class="advisory-text">Rain expected at 4 PM. Save water and let nature do the work. Resume normal schedule tomorrow.</div><div class="advisory-time">Updated 1 hour ago</div></div></div>
+</div>
+</div>
+</main>
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>

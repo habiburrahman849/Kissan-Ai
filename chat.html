@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kissan AI - Chat</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<div class="toast-container" id="toastContainer"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell" id="appShell">
+<!-- Sidebar -->
+<aside class="sidebar open" id="sidebar">
+<div class="sidebar-header">
+<div class="brand"><div class="brand-icon"><i class="fas fa-seedling"></i></div><div class="brand-text">Kissan AI</div></div>
+</div>
+<nav class="sidebar-nav">
+<div class="nav-section">
+<div class="nav-section-title">Main</div>
+<a href="chat.html" class="nav-item active"><i class="fas fa-comment-dots"></i><span>Chat</span><span class="nav-badge">3</span></a>
+<a href="weather.html" class="nav-item"><i class="fas fa-cloud-sun"></i><span>Weather</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Account</div>
+<a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+<a href="profile.html" class="nav-item"><i class="fas fa-user"></i><span>Profile</span></a>
+</div>
+<div class="nav-section">
+<div class="nav-section-title">Support</div>
+<a href="help.html" class="nav-item"><i class="fas fa-question-circle"></i><span>Help</span></a>
+</div>
+</nav>
+<div class="sidebar-footer">
+<a href="profile.html" class="user-mini" style="text-decoration:none">
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Ahmad">
+<div class="user-mini-info"><div class="user-mini-name">Ahmad</div><div class="user-mini-role">Premium Farmer</div></div>
+<i class="fas fa-chevron-right" style="color:var(--text-muted);font-size:12px"></i>
+</a>
+</div>
+<div class="sidebar-drag-handle" id="sidebarDragHandle"><button class="sidebar-arrow" id="sidebarArrow" onclick="toggleSidebar()"><i class="fas fa-chevron-left" id="sidebarArrowIcon"></i></button></div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content" id="mainContent">
+<header class="top-header">
+<div class="header-left">
+<button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+<div>
+<h1 class="page-title">Chat</h1>
+<p class="page-subtitle">Talk to Kissan AI</p>
+</div>
+</div>
+<div class="header-actions">
+<button class="header-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="headerThemeIcon"></i></button>
+<button class="header-btn" style="position:relative"><i class="fas fa-bell"></i><span class="dot"></span></button>
+</div>
+</header>
+
+<div class="content-area" style="padding:0">
+<div class="chat-container">
+<div class="chat-header">
+<div class="chat-avatar"><i class="fas fa-robot"></i><div class="status-dot"></div></div>
+<div class="chat-info"><div class="chat-name">Kissan AI</div><div class="chat-status"><i class="fas fa-circle" style="font-size:8px;color:var(--primary)"></i>online</div></div>
+<div class="chat-actions" style="position:relative">
+<button class="chat-action-btn" id="chatMenuBtn" onclick="toggleChatMenu()"><i class="fas fa-ellipsis-v"></i></button>
+<div class="chat-dropdown" id="chatDropdown">
+<button class="chat-dropdown-item" onclick="clearChat()"><i class="fas fa-trash-alt"></i><span>Clear Chat</span></button>
+<button class="chat-dropdown-item" onclick="shareChat()"><i class="fas fa-share-alt"></i><span>Share Chat</span></button>
+<button class="chat-dropdown-item" onclick="reportChat()"><i class="fas fa-flag"></i><span>Report Chat</span></button>
+<a class="chat-dropdown-item" href="help.html"><i class="fas fa-question-circle"></i><span>Help</span></a>
+</div>
+</div>
+</div>
+<div class="chat-area" id="chatArea">
+<div class="date-separator"><span>Today</span></div>
+<div class="message bot" data-sender="bot"><div class="message-text">&#x1F44B; Assalam o alaikum! I'm Kissan AI, your personal farming assistant. I can help you with:</div><div class="message-reactions-container"></div><div class="message-time">10:00 AM</div></div>
+<div class="message bot" data-sender="bot"><div class="message-text">&#x1F33E; Crop disease identification<br>&#x1F331; Fertilizer recommendations<br>&#x1F326;&#xFE0F; Weather-based farming advice<br>&#x1F4B0; Market price updates<br>&#x1F41B; Pest control solutions</div><div class="message-reactions-container"></div><div class="message-time">10:00 AM</div></div>
+<div class="message bot" data-sender="bot"><div class="message-text">Send me a photo of your crop problem, ask via voice, or type your question! How can I help you today? &#x1F69C;</div><div class="message-reactions-container"></div><div class="message-time">10:00 AM</div></div>
+</div>
+<div class="typing-indicator" id="typingIndicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+<div class="suggested-chips" id="suggestedChips">
+<button class="suggested-chip" onclick="sendSuggested('What crops should I plant this season?')">&#x1F33E; Crop Suggestions</button>
+<button class="suggested-chip" onclick="sendSuggested('Identify disease in my wheat')">&#x1F9A0; Disease ID</button>
+<button class="suggested-chip" onclick="sendSuggested('Best fertilizer for rice?')">&#x1F9EA; Fertilizer</button>
+<button class="suggested-chip" onclick="sendSuggested('Market price for tomatoes')">&#x1F4B0; Market Price</button>
+</div>
+
+<!-- Voice Recording UI (shown when recording) -->
+<div class="voice-recording-bar" id="voiceRecordingBar" style="display:none">
+<div class="voice-recorder-inner">
+<div class="voice-timer" id="voiceTimer">00:00</div>
+<div class="voice-frequency" id="voiceFrequency"></div>
+<div class="voice-controls">
+<button class="voice-ctrl-btn" id="voiceResumeBtn" onclick="resumePauseVoice()" title="Pause/Resume"><i class="fas fa-pause"></i></button>
+<button class="voice-ctrl-btn voice-stop-btn" id="voiceStopBtn" onclick="stopVoiceRecording()" title="Stop"><i class="fas fa-stop"></i></button>
+</div>
+</div>
+</div>
+
+<div class="chat-input-area" id="chatInputArea">
+<div class="chat-input-wrapper">
+<button class="attach-btn" onclick="document.getElementById('imageInput').click()"><i class="fas fa-plus"></i></button>
+<input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageUpload(event)">
+<textarea class="chat-input" id="chatInput" placeholder="Type a message..." rows="1" oninput="handleChatInput()" onkeypress="handleChatKeyPress(event)"></textarea>
+<button class="voice-btn" id="voiceBtn" onclick="startVoiceRecording()"><i class="fas fa-microphone"></i></button>
+<button class="send-btn" id="sendBtn" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<!-- Message Context Menu -->
+<div class="msg-context-menu" id="msgContextMenu">
+<button class="msg-ctx-item" onclick="copyMessage()"><i class="fas fa-copy"></i><span>Copy</span></button>
+<button class="msg-ctx-item" onclick="reactToMessage()"><i class="fas fa-smile"></i><span>React</span></button>
+<button class="msg-ctx-item" id="deleteMsgBtn" onclick="deleteMessage()"><i class="fas fa-trash"></i><span>Delete</span></button>
+</div>
+
+<!-- Reaction Picker -->
+<div class="reaction-picker" id="reactionPicker">
+<button class="reaction-emoji" onclick="addReaction('\uD83D\uDC4D')">\uD83D\uDC4D</button>
+<button class="reaction-emoji" onclick="addReaction('\uD83D\uDE02')">\uD83D\uDE02</button>
+<button class="reaction-emoji" onclick="addReaction('\u2764\uFE0F')">\u2764\uFE0F</button>
+<button class="reaction-emoji" onclick="addReaction('\uD83D\uDE2E')">\uD83D\uDE2E</button>
+<button class="reaction-emoji" onclick="addReaction('\uD83D\uDE4F')">\uD83D\uDE4F</button>
+<button class="reaction-emoji" onclick="addReaction('\uD83C\uDF3E')">\uD83C\uDF3E</button>
+</div>
+
+<script src="shared.js"></script>
+</body>
+</html>
