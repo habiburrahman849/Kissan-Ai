@@ -1,466 +1,1179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kissan AI - Smart Farming Assistant for Pakistani Farmers</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared.css">
-<style>
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  body.landing-body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.08), transparent 45%),
-                radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.06), transparent 45%),
-                #f8fafc;
-    color: #0f172a;
-    font-family: 'Outfit', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow-x: hidden;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kissan AI - Smart Dual-Brain Farming Assistant for Pakistani Farmers</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Nastaliq+Urdu:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --primary-glow: rgba(16, 185, 129, 0.15);
+      --secondary: #0ea5e9;
+      --bg-gradient: radial-gradient(circle at top left, rgba(16, 185, 129, 0.08), transparent 45%),
+                      radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.06), transparent 45%),
+                      #f8fafc;
+      --text-color: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --card-border: rgba(16, 185, 129, 0.15);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(15, 23, 42, 0.06);
+      --shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
+      --chat-bubble-user: #e6fcf2;
+      --chat-bubble-bot: #ffffff;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --badge-bg: rgba(16, 185, 129, 0.1);
+      --badge-text: #047857;
+      --tab-inactive: #f1f5f9;
+      --tab-inactive-text: #475569;
+    }
 
-  .landing-container {
-    width: min(1200px, 92%);
-    margin: 0 auto;
-    padding: 20px 0 60px 0;
-  }
+    body[data-theme="dark"] {
+      --bg-gradient: radial-gradient(circle at top left, rgba(16, 185, 129, 0.12), transparent 40%),
+                      radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.08), transparent 40%),
+                      #0f172a;
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+      --card-bg: rgba(30, 41, 59, 0.75);
+      --card-border: rgba(16, 185, 129, 0.25);
+      --glass-bg: rgba(15, 23, 42, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+      --chat-bubble-user: #134e3a;
+      --chat-bubble-bot: #1e293b;
+      --badge-bg: rgba(16, 185, 129, 0.2);
+      --badge-text: #34d399;
+      --tab-inactive: #1e293b;
+      --tab-inactive-text: #94a3b8;
+    }
 
-  /* Header Brand */
-  .header-brand {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 0;
-    border-bottom: 1px solid rgba(15, 23, 42, 0.05);
-    animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body.landing-body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      font-family: var(--font-body);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-  .brand-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+    /* Floating Abstract Blobs */
+    .blob-bg {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+      top: -150px;
+      right: -100px;
+      z-index: -1;
+      filter: blur(40px);
+      animation: pulseBlob 10s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
 
-  .brand-logo-icon {
-    width: 46px;
-    height: 46px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    color: white;
-    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
-  }
+    .blob-bg-2 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+      bottom: 10%;
+      left: -150px;
+      z-index: -1;
+      filter: blur(40px);
+      animation: pulseBlob 14s infinite alternate-reverse ease-in-out 2s;
+      pointer-events: none;
+    }
 
-  .brand-logo-text {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #0f172a, #059669);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    @keyframes pulseBlob {
+      0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+      50% { transform: scale(1.15) translate(50px, -30px); opacity: 1; }
+      100% { transform: scale(0.9) translate(-30px, 50px); opacity: 0.6; }
+    }
 
-  .nav-actions {
-    display: flex;
-    gap: 16px;
-  }
+    .landing-container {
+      width: min(1200px, 92%);
+      margin: 0 auto;
+      padding: 20px 0 60px 0;
+      position: relative;
+    }
 
-  .btn-nav-login {
-    padding: 10px 22px;
-    border: 1.5px solid rgba(16, 185, 129, 0.2);
-    background: transparent;
-    color: #059669;
-    font-weight: 700;
-    font-size: 14px;
-    border-radius: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.3s ease;
-  }
+    /* Glassmorphism Header */
+    .header-brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      position: sticky;
+      top: 20px;
+      z-index: 1000;
+    }
 
-  .btn-nav-login:hover {
-    background: rgba(16, 185, 129, 0.05);
-    border-color: #10b981;
-  }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  /* Hero Section */
-  .hero-section {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: center;
-    margin: 60px 0 80px 0;
-    gap: 40px;
-  }
+    .brand-logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #10b981, #0ea5e9);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+      animation: logoGlow 3s infinite alternate;
+    }
 
-  @media (max-width: 968px) {
+    @keyframes logoGlow {
+      0% { box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
+      100% { box-shadow: 0 12px 24px rgba(14, 165, 233, 0.4); }
+    }
+
+    .brand-logo-text {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text-color), #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .theme-toggle-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: transparent;
+      color: var(--text-color);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--badge-bg);
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .btn-nav-login {
+      padding: 10px 22px;
+      border: 1.5px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav-login:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+    }
+
+    /* Hero Section */
     .hero-section {
-      grid-template-columns: 1fr;
-      text-align: center;
-      margin: 40px 0 50px 0;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      margin: 80px 0;
+      gap: 48px;
     }
-  }
 
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
-  }
+    @media (max-width: 968px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        margin: 40px 0;
+        gap: 36px;
+      }
+    }
 
-  .hero-badge {
-    align-self: flex-start;
-    padding: 6px 14px;
-    background: rgba(16, 185, 129, 0.1);
-    color: #047857;
-    font-size: 13px;
-    font-weight: 700;
-    border-radius: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
 
-  @media (max-width: 968px) {
     .hero-badge {
-      align-self: center;
+      align-self: flex-start;
+      padding: 6px 14px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(16, 185, 129, 0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     }
-  }
 
-  .hero-title {
-    font-size: clamp(34px, 5vw, 56px);
-    font-weight: 900;
-    line-height: 1.15;
-    letter-spacing: -1.5px;
-    color: #0f172a;
-  }
+    @media (max-width: 968px) {
+      .hero-badge {
+        align-self: center;
+      }
+    }
 
-  .hero-title span {
-    color: #10b981;
-    background: linear-gradient(135deg, #10b981, #0ea5e9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 5.5vw, 54px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      color: var(--text-color);
+    }
 
-  .hero-subtitle {
-    font-size: 18px;
-    color: #475569;
-    line-height: 1.6;
-    max-width: 600px;
-  }
+    .hero-title span {
+      background: linear-gradient(135deg, #10b981, #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-  .btn-get-started {
-    align-self: flex-start;
-    padding: 16px 36px;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    font-size: 18px;
-    font-weight: 800;
-    border: none;
-    border-radius: 18px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    text-decoration: none;
-  }
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 600px;
+    }
 
-  @media (max-width: 968px) {
+    .hero-actions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .btn-get-started {
-      align-self: center;
+      align-self: flex-start;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
     }
-  }
 
-  .btn-get-started:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(16, 185, 129, 0.45);
-  }
+    @media (max-width: 968px) {
+      .btn-get-started {
+        align-self: center;
+      }
+    }
 
-  .btn-get-started:active {
-    transform: translateY(0) scale(0.98);
-  }
+    .btn-get-started:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(16, 185, 129, 0.45);
+    }
 
-  /* Hero Right (Illustration) */
-  .hero-right {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-  }
+    .btn-get-started:active {
+      transform: translateY(0) scale(0.98);
+    }
 
-  .illustration-card {
-    position: relative;
-    width: 100%;
-    max-width: 380px;
-    height: 480px;
-    border-radius: 36px;
-    background: linear-gradient(185deg, rgba(255,255,255,0.9), rgba(240,253,244,0.6));
-    border: 1px solid rgba(16, 185, 129, 0.15);
-    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.08);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 30px;
-  }
+    .badge-subinfo {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    @media (max-width: 968px) {
+      .badge-subinfo {
+        justify-content: center;
+      }
+    }
 
-  .card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+    /* Hero Right (Mock Chat Simulator) */
+    .hero-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+    }
 
-  .card-chip {
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #475569;
-  }
+    .chat-mock-container {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 480px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
 
-  .card-badge-status {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 10px #10b981;
-    animation: pulse 2s infinite;
-  }
+    .chat-mock-header {
+      background: linear-gradient(135deg, #10b981, #059669);
+      padding: 18px 24px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-  .card-middle {
-    text-align: center;
-    margin: 40px 0;
-  }
+    .chat-mock-header-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .card-avatar {
-    width: 90px;
-    height: 90px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    color: #10b981;
-    margin-bottom: 16px;
-    animation: float 4s ease-in-out infinite;
-  }
+    .chat-mock-avatar {
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
 
-  .card-message-bubble {
-    background: white;
-    border: 1px solid rgba(15, 23, 42, 0.05);
-    border-radius: 20px;
-    padding: 16px 20px;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #334155;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.02);
-    text-align: left;
-  }
+    .chat-mock-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
 
-  .card-bottom {
-    display: flex;
-    gap: 12px;
-  }
+    .chat-mock-status {
+      font-size: 11px;
+      opacity: 0.8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-  .action-pill {
-    flex: 1;
-    padding: 10px;
-    background: #f1f5f9;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #475569;
-    text-align: center;
-    border: none;
-  }
+    .chat-mock-status::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      animation: pulse 2s infinite;
+    }
 
-  /* Floating Elements */
-  .floating-icon {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: white;
-    border-radius: 18px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    border: 1px solid rgba(15,23,42,0.04);
-  }
+    .chat-mock-body {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.02), transparent 70%);
+    }
 
-  .f-icon-1 { top: 40px; left: -20px; color: #38bdf8; animation: float 5s ease-in-out infinite 0.5s; }
-  .f-icon-2 { bottom: 80px; right: -20px; color: #fb7185; animation: float 6s ease-in-out infinite; }
+    .chat-mock-msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      animation: msgPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    }
 
-  /* Section Features */
-  .section-features {
-    padding: 80px 0;
-    border-top: 1px solid rgba(15, 23, 42, 0.05);
-  }
+    @keyframes msgPop {
+      from { opacity: 0; transform: scale(0.9) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
 
-  .section-title-wrap {
-    text-align: center;
-    margin-bottom: 50px;
-  }
+    .chat-mock-msg.bot {
+      background: var(--chat-bubble-bot);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      color: var(--text-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      border: 1px solid var(--glass-border);
+    }
 
-  .section-title {
-    font-size: 32px;
-    font-weight: 800;
-    color: #0f172a;
-    margin-bottom: 12px;
-  }
+    .chat-mock-msg.user {
+      background: var(--chat-bubble-user);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+      color: var(--text-color);
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);
+    }
 
-  .section-subtitle {
-    font-size: 16px;
-    color: #64748b;
-  }
+    .chat-mock-msg-urdu {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      direction: rtl;
+      text-align: right;
+      font-size: 13px;
+      line-height: 2;
+    }
 
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-  }
+    .chat-mock-typing {
+      align-self: flex-start;
+      background: var(--chat-bubble-bot);
+      border-radius: 18px;
+      border-bottom-left-radius: 4px;
+      padding: 12px 20px;
+      display: none;
+      gap: 5px;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      border: 1px solid var(--glass-border);
+    }
 
-  .feature-card {
-    background: white;
-    border: 1px solid rgba(15, 23, 42, 0.05);
-    border-radius: 28px;
-    padding: 36px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.02);
-  }
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: typingBounce 1.4s infinite ease-in-out;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-  .feature-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.08);
-  }
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+    }
 
-  .feature-icon-wrap {
-    width: 60px;
-    height: 60px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-  }
+    .chat-mock-footer {
+      padding: 14px 20px;
+      background: var(--glass-bg);
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-  .feature-icon-wrap.weather { background: #e0f2fe; color: #0284c7; }
-  .feature-icon-wrap.pest { background: #fee2e2; color: #dc2626; }
-  .feature-icon-wrap.mandi { background: #dcfce7; color: #16a34a; }
+    .chat-mock-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .chat-mock-pills::-webkit-scrollbar { display: none; }
 
-  .feature-card-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #0f172a;
-  }
+    .chat-mock-pill-btn {
+      padding: 6px 12px;
+      background: var(--badge-bg);
+      border: 1px solid rgba(16, 185, 129, 0.15);
+      border-radius: 12px;
+      font-size: 11px;
+      color: var(--badge-text);
+      cursor: pointer;
+      white-space: nowrap;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
 
-  .feature-card-desc {
-    font-size: 14px;
-    color: #475569;
-    line-height: 1.6;
-  }
+    .chat-mock-pill-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-1px);
+    }
 
-  /* Footer */
-  .footer-landing {
-    text-align: center;
-    padding: 30px 0;
-    border-top: 1px solid rgba(15, 23, 42, 0.05);
-    color: #64748b;
-    font-size: 14px;
-  }
+    /* Floating simulation icons */
+    .floating-icon {
+      position: absolute;
+      width: 54px;
+      height: 54px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(10px);
+      z-index: 5;
+    }
 
-  .footer-landing i {
-    color: #ef4444;
-    animation: beat 1.2s infinite;
-  }
+    .f-icon-1 { top: 30px; left: -24px; color: #38bdf8; animation: float 6s ease-in-out infinite 0.5s; }
+    .f-icon-2 { bottom: 60px; right: -24px; color: #fb7185; animation: float 7s ease-in-out infinite; }
 
-  /* Scroll Indicator */
-  .scroll-down-wrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
+    /* Interactive Field Analyzer Widget (WOW Factor) */
+    .analyzer-section {
+      padding: 60px 0;
+      border-top: 1px solid var(--glass-border);
+    }
 
-  .scroll-down-btn {
-    background: white;
-    border: 1px solid rgba(15, 23, 42, 0.06);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #475569;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-    transition: var(--transition);
-    animation: bounce 2s infinite;
-  }
+    .analyzer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 40px;
+      align-items: center;
+    }
 
-  .scroll-down-btn:hover {
-    color: #10b981;
-    border-color: #10b981;
-    transform: translateY(2px);
-  }
+    @media (max-width: 868px) {
+      .analyzer-card {
+        grid-template-columns: 1fr;
+        padding: 24px;
+        gap: 28px;
+      }
+    }
 
-  /* Animations */
-  @keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
+    .analyzer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
 
-  @keyframes fadeInUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
+    .analyzer-tag {
+      align-self: flex-start;
+      padding: 4px 10px;
+      background: rgba(14, 165, 233, 0.1);
+      color: #0ea5e9;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
+    .analyzer-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-color);
+      line-height: 1.25;
+    }
 
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.5; }
-  }
+    .analyzer-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
 
-  @keyframes beat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-  }
+    .analyzer-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-6px); }
-    60% { transform: translateY(-3px); }
-  }
-</style>
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-color);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+      background: var(--tab-inactive);
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .btn-analyze {
+      padding: 14px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      color: white;
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(14, 165, 233, 0.2);
+    }
+
+    .btn-analyze:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(14, 165, 233, 0.35);
+    }
+
+    .analyzer-right {
+      background: rgba(15, 23, 42, 0.03);
+      border: 1px dashed var(--glass-border);
+      border-radius: 20px;
+      padding: 24px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    body[data-theme="dark"] .analyzer-right {
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .analyzer-result-active {
+      align-items: flex-start;
+      text-align: left;
+      justify-content: flex-start;
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+    }
+
+    .result-placeholder-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      opacity: 0.8;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .result-placeholder-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .result-placeholder-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Result Content Styling */
+    .analyzer-result-content {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 10px;
+      width: 100%;
+    }
+
+    .result-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .result-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .result-advisory {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text-color);
+      margin: 4px 0;
+    }
+
+    .result-stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .result-stat-card {
+      background: var(--tab-inactive);
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .result-stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .result-stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-top: 2px;
+    }
+
+    /* Tabs Component - Tech Architecture */
+    .architecture-section {
+      padding: 80px 0;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .arch-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .arch-badge {
+      padding: 4px 12px;
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .arch-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-color);
+    }
+
+    .arch-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .tabs-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .tabs-nav {
+      display: flex;
+      background: var(--tab-inactive);
+      padding: 6px;
+      border-radius: 16px;
+      gap: 6px;
+      border: 1px solid var(--glass-border);
+    }
+
+    @media (max-width: 600px) {
+      .tabs-nav {
+        flex-direction: column;
+      }
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--tab-inactive-text);
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .tab-pane {
+      display: none;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .tab-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .tab-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tab-content-left {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-content-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-color);
+    }
+
+    .tab-content-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .tab-content-item {
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-color);
+    }
+
+    .tab-content-item i {
+      color: var(--primary);
+      font-size: 16px;
+      margin-top: 3px;
+    }
+
+    .tab-content-right {
+      background: rgba(16, 185, 129, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--tab-inactive);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-color);
+      border: 1px solid var(--glass-border);
+    }
+
+    /* Core Features Grid Section */
+    .section-features {
+      padding: 80px 0;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--text-color);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 36px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(16, 185, 129, 0.35);
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.08);
+    }
+
+    .feature-card:hover::before {
+      background: linear-gradient(90deg, #10b981, #0ea5e9);
+    }
+
+    .feature-icon-wrap {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.02);
+    }
+
+    .feature-icon-wrap.memory { background: #e0f2fe; color: #0284c7; }
+    .feature-icon-wrap.rag { background: #fee2e2; color: #dc2626; }
+    .feature-icon-wrap.weather { background: #dcfce7; color: #16a34a; }
+    .feature-icon-wrap.voice { background: #f3e5f5; color: #9c27b0; }
+
+    .feature-card-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-color);
+    }
+
+    .feature-card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Info Stats Section */
+    .stats-section {
+      background: var(--tab-inactive);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      text-align: center;
+      margin: 40px 0 80px 0;
+    }
+
+    @media (max-width: 768px) {
+      .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-top: 6px;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Scroll Down Button */
+    .scroll-down-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .scroll-down-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-down-btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(2px);
+    }
+
+    /* Footer */
+    .footer-landing {
+      text-align: center;
+      padding: 30px 0;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+      background: var(--glass-bg);
+    }
+
+    .footer-landing i {
+      color: #ef4444;
+      animation: beat 1.2s infinite;
+    }
+
+    /* Keyframes */
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+      60% { transform: translateY(-3px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body class="landing-body">
   <div class="toast-container" id="toastContainer"></div>
+  <div class="blob-bg"></div>
+  <div class="blob-bg-2"></div>
 
   <div class="landing-container">
     <!-- Header -->
@@ -470,7 +1183,13 @@
         <div class="brand-logo-text">Kissan AI</div>
       </div>
       <div class="nav-actions">
-        <a href="login.html" class="btn-nav-login">Sign In</a>
+        <!-- Premium Theme Toggle in Header -->
+        <button class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme">
+          <i class="fas fa-moon" id="headerThemeIcon"></i>
+        </button>
+        <a href="login.html" class="btn-nav-login">
+          <i class="fas fa-user-circle"></i> Farmer Sign In
+        </a>
       </div>
     </header>
 
@@ -478,41 +1197,58 @@
     <section class="hero-section">
       <div class="hero-left">
         <div class="hero-badge">
-          <i class="fas fa-sparkles"></i> Intelligent MemoryAgent
+          <i class="fas fa-brain"></i> Dual-Brain Intelligent Agent
         </div>
-        <h1 class="hero-title">Your Personal <span>AI Farming Expert</span> in Urdu & English</h1>
-        <p class="hero-subtitle">Get instant localized agricultural advice, weather-aware spray warnings, pest diagnosis, and market prices tailored to your field's history.</p>
+        <h1 class="hero-title">Your Personalized <span>AI Farming Advisor</span></h1>
+        <p class="hero-subtitle">Combining persistent farmer memory (Mem0) and local agricultural RAG to provide instant, field-specific advice in Urdu &amp; English.</p>
 
-        <!-- Get Started Button -->
-        <button class="btn-get-started" id="getStartedBtn" onclick="startGuestFlow()">
-          <span id="btnText">Get Started</span>
-          <i class="fas fa-arrow-right" id="btnIcon"></i>
-        </button>
+        <div class="hero-actions-container">
+          <button class="btn-get-started" id="getStartedBtn" onclick="startGuestFlow()">
+            <span id="btnText">Launch Kissan AI</span>
+            <i class="fas fa-arrow-right" id="btnIcon"></i>
+          </button>
+          <div class="badge-subinfo">
+            <i class="fas fa-check-circle" style="color:var(--primary)"></i> Free Guest Mode fallback. No sign-up required.
+          </div>
+        </div>
       </div>
 
-      <!-- Illustration Card -->
+      <!-- Hero Right (Interactive Mock Chat Simulator) -->
       <div class="hero-right">
-        <!-- Floating Elements -->
         <div class="floating-icon f-icon-1"><i class="fas fa-cloud-sun-rain"></i></div>
         <div class="floating-icon f-icon-2"><i class="fas fa-chart-line"></i></div>
 
-        <div class="illustration-card">
-          <div class="card-top">
-            <span class="card-chip">Memory Mode</span>
-            <div class="card-badge-status"></div>
+        <div class="chat-mock-container">
+          <div class="chat-mock-header">
+            <div class="chat-mock-header-info">
+              <div class="chat-mock-avatar"><i class="fas fa-robot"></i></div>
+              <div>
+                <div class="chat-mock-title">Kissan AI Assistant</div>
+                <div class="chat-mock-status">Online</div>
+              </div>
+            </div>
+            <i class="fas fa-microphone"></i>
           </div>
 
-          <div class="card-middle">
-            <div class="card-avatar"><i class="fas fa-robot"></i></div>
-            <div class="card-message-bubble">
-              <strong>Kissan AI:</strong> "احمد بھائی، ملتان میں اگلے 2 دن موسم صاف رہے گا لیکن ہوا کی رفتار تیز ہے۔ سپرے کچھ دیر کے لیے مؤخر کریں..."
+          <div class="chat-mock-body" id="chatMockBody">
+            <div class="chat-mock-msg bot">
+              Welcome to Kissan AI! I have loaded your field history. Select a question below to see me in action:
             </div>
           </div>
 
-          <div class="card-bottom">
-            <button class="action-pill" disabled>Weather</button>
-            <button class="action-pill" disabled>Pest Guide</button>
-            <button class="action-pill" disabled>Market Rates</button>
+          <!-- Typing Indicator -->
+          <div class="chat-mock-typing" id="chatMockTyping">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+
+          <div class="chat-mock-footer">
+            <div class="chat-mock-pills">
+              <button class="chat-mock-pill-btn" onclick="simulateChat('wheat')">🌾 Wheat Spray Advice</button>
+              <button class="chat-mock-pill-btn" onclick="simulateChat('mandi')">📈 Faisalabad Mandi Rates</button>
+              <button class="chat-mock-pill-btn" onclick="simulateChat('pest')">🐛 Cotton Whitefly Guide</button>
+            </div>
           </div>
         </div>
       </div>
@@ -525,90 +1261,473 @@
       </button>
     </div>
 
-    <!-- Features Section -->
+    <!-- Interactive Field Analyzer Widget (WOW Factor) -->
+    <section class="analyzer-section">
+      <div class="analyzer-card">
+        <div class="analyzer-left">
+          <span class="analyzer-tag">Interactive Simulation</span>
+          <h2 class="analyzer-title">Field Diagnostic &amp; Market Analyzer</h2>
+          <p class="analyzer-desc">Simulate a local field advisory lookup by selecting your parameters. Kissan AI instantly checks crop calendars, weather limitations, and local market prices.</p>
+          
+          <div class="analyzer-form">
+            <div class="form-group">
+              <label class="form-label" for="cropSelect">Target Crop</label>
+              <select class="form-select" id="cropSelect">
+                <option value="wheat">Wheat (گندم)</option>
+                <option value="cotton">Cotton (کپاس)</option>
+                <option value="rice">Rice (چاول)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="districtSelect">District Location</label>
+              <select class="form-select" id="districtSelect">
+                <option value="multan">Multan (ملتان)</option>
+                <option value="faisalabad">Faisalabad (فیصل آباد)</option>
+                <option value="hyderabad">Hyderabad (حیدرآباد)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="irrigationSelect">Irrigation Method</label>
+              <select class="form-select" id="irrigationSelect">
+                <option value="tubewell">Tube-well (ٹیوب ویل)</option>
+                <option value="canal">Canal (نہر)</option>
+              </select>
+            </div>
+            <button class="btn-analyze" onclick="runSimulationAnalysis()">
+              <i class="fas fa-calculator"></i> Retrieve Custom Insights
+            </button>
+          </div>
+        </div>
+
+        <div class="analyzer-right" id="analyzerRight">
+          <div class="result-placeholder" id="analyzerPlaceholder">
+            <div class="result-placeholder-icon"><i class="fas fa-server"></i></div>
+            <div class="result-placeholder-text">Waiting for input parameters...</div>
+            <div class="result-placeholder-sub">Select crop and district to generate diagnostic insight.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Architecture Section (Tabs) -->
+    <section class="architecture-section">
+      <div class="arch-header">
+        <span class="arch-badge">Behind The Code</span>
+        <h2 class="arch-title">Technical Dual-Brain Architecture</h2>
+        <p class="arch-desc">How Kissan AI processes queries to provide contextually-accurate guidance.</p>
+      </div>
+
+      <div class="tabs-container">
+        <div class="tabs-nav">
+          <button class="tab-btn active" onclick="switchTab(event, 'tab-memory')">
+            <i class="fas fa-database"></i> Brain 1: Memory (Mem0)
+          </button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-rag')">
+            <i class="fas fa-book-open"></i> Brain 2: Agri-RAG
+          </button>
+          <button class="tab-btn" onclick="switchTab(event, 'tab-weather')">
+            <i class="fas fa-cloud-sun"></i> Weather Warning API
+          </button>
+        </div>
+
+        <div class="tab-pane active" id="tab-memory">
+          <div class="tab-grid">
+            <div class="tab-content-left">
+              <h3 class="tab-content-title">Farmer memory profile database</h3>
+              <p class="analyzer-desc">No more repeating yourself. Kissan AI learns from past conversations to build a persistent farmer profile using Mem0 semantic cloud memory.</p>
+              <div class="tab-content-list">
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Crop Tracking:</strong> Automatically records crop planting dates, harvest dates, and acreage inside the SQLite profile backend.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Farmer History:</strong> Retains context on available equipment, soil types, and language preference between visits.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Implicit Extraction:</strong> Extracts key farmer facts directly from regular chat messages without form-filling.</div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content-right">
+              <span class="tech-pill"><i class="fas fa-cog"></i> SQLite Backend</span>
+              <span class="tech-pill"><i class="fas fa-cloud"></i> Mem0 Cloud Integration</span>
+              <span class="tech-pill"><i class="fas fa-history"></i> Context Extraction</span>
+              <div style="font-size:12px;color:var(--text-muted);border-top:1px solid var(--glass-border);padding-top:12px;margin-top:8px;">
+                <strong>Local Fallback:</strong> If the cloud API keys are missing, the system utilizes local SQLite memory logs so the app works offline.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-rag">
+          <div class="tab-grid">
+            <div class="tab-content-left">
+              <h3 class="tab-content-title">Pakistan-Grounded Knowledge Base</h3>
+              <p class="analyzer-desc">Grounded in Pakistan-specific documents rather than general worldwide advice, preventing incorrect fertilization and crop calendars.</p>
+              <div class="tab-content-list">
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Indexed Documents:</strong> Built-in vector parser reads official agricultural statistics, Punjab/Sindh crop calendars, and water consumption guides.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Localized Information:</strong> Answers specific questions like "wheat planting window in Multan" using local district guides.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Vector Seed Retriever:</strong> Performs fast local semantic similarity searches to supply relevant snippets directly to the Qwen LLM.</div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content-right">
+              <span class="tech-pill"><i class="fas fa-file-pdf"></i> Official Pakistan PDF Assets</span>
+              <span class="tech-pill"><i class="fas fa-search"></i> Semantic Vector Chunk Index</span>
+              <span class="tech-pill"><i class="fas fa-shield-alt"></i> Anti-Hallucination Guardrails</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-pane" id="tab-weather">
+          <div class="tab-grid">
+            <div class="tab-content-left">
+              <h3 class="tab-content-title">Weather-Aware Spray Safeguards</h3>
+              <p class="analyzer-desc">Pesticides and liquid fertilizers get washed away or scattered in bad weather. Kissan AI parses live weather variables to issue alert notices.</p>
+              <div class="tab-content-list">
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Wind Check:</strong> Recommends postponing chemical sprays if wind speed exceeds 12 km/h.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>Precipitation Forecasts:</strong> Warns against immediate tube-well operation if local rainfall is expected within 24 hours.</div>
+                </div>
+                <div class="tab-content-item">
+                  <i class="fas fa-check"></i>
+                  <div><strong>OpenWeatherMap API:</strong> Accesses real-time weather stations in Multan, Faisalabad, Lahore, and Karachi.</div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content-right">
+              <span class="tech-pill"><i class="fas fa-bolt"></i> Real-time OpenWeather API</span>
+              <span class="tech-pill"><i class="fas fa-exclamation-triangle"></i> Wind & Rain Warnings</span>
+              <span class="tech-pill"><i class="fas fa-water"></i> Irrigation Optimization</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features Grid -->
     <section class="section-features" id="featuresSection">
       <div class="section-title-wrap">
-        <h2 class="section-title">Core Assistants Built For You</h2>
-        <p class="section-subtitle">Empowering Pakistani farmers with data-driven decision tools.</p>
+        <h2 class="section-title">Designed For Pakistani Agriculture</h2>
+        <p class="section-subtitle">Dual-brain farming technology powered by Alibaba Qwen-Plus AI.</p>
       </div>
 
       <div class="features-grid">
-        <!-- Weather Card -->
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <div class="feature-icon-wrap memory"><i class="fas fa-database"></i></div>
+          <h3 class="feature-card-title">Memory Profiles</h3>
+          <p class="feature-card-desc">Remembers your farm's size, soil type, and crop history so you don't have to re-explain your setup on every chat.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <div class="feature-icon-wrap rag"><i class="fas fa-book"></i></div>
+          <h3 class="feature-card-title">Pakistan Agri-RAG</h3>
+          <p class="feature-card-desc">Grounded in Pakistan crop calendars, fertilizer stats, water tables, and agricultural census reports for maximum accuracy.</p>
+        </div>
+
+        <!-- Card 3 -->
         <div class="feature-card">
           <div class="feature-icon-wrap weather"><i class="fas fa-cloud-sun-rain"></i></div>
-          <h3 class="feature-card-title">Weather-Aware Spray Warnings</h3>
-          <p class="feature-card-desc">Automatically schedules tube-well irrigation and chemical sprays by tracking temperature, wind, and local rain forecasts.</p>
+          <h3 class="feature-card-title">Weather Advisory</h3>
+          <p class="feature-card-desc">Integrates live temperature, wind speed, and rain metrics to advise on irrigation schedules and pesticide safety.</p>
         </div>
 
-        <!-- Pest Card -->
+        <!-- Card 4 -->
         <div class="feature-card">
-          <div class="feature-icon-wrap pest"><i class="fas fa-bug"></i></div>
-          <h3 class="feature-card-title">Pest &amp; Disease Scout</h3>
-          <p class="feature-card-desc">Upload a photo of crop damage for instant diagnostic support and registered treatment suggestions tailored to your variety.</p>
+          <div class="feature-icon-wrap voice"><i class="fas fa-microphone"></i></div>
+          <h3 class="feature-card-title">Bilingual Urdu &amp; English</h3>
+          <p class="feature-card-desc">Urdu Nastaliq typography layouts and audio-mode support built specifically for conversational ease.</p>
         </div>
+      </div>
+    </section>
 
-        <!-- Mandi Card -->
-        <div class="feature-card">
-          <div class="feature-icon-wrap mandi"><i class="fas fa-chart-line"></i></div>
-          <h3 class="feature-card-title">Real-Time Mandi Pricing</h3>
-          <p class="feature-card-desc">Retrieve daily crop market rates across Punjab, KP, and Sindh grain mandis to ensure maximum profits at harvest.</p>
-        </div>
+    <!-- Platform Stats Panel -->
+    <section class="stats-section">
+      <div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Pakistan Grounded</div>
+        <div class="stat-sub">Crop calendars &amp; maps</div>
+      </div>
+      <div>
+        <div class="stat-number">Qwen</div>
+        <div class="stat-label">Language Engine</div>
+        <div class="stat-sub">State-of-the-art Urdu LLM</div>
+      </div>
+      <div>
+        <div class="stat-number">2-way</div>
+        <div class="stat-label">Dual-Brain</div>
+        <div class="stat-sub">RAG + Mem0 memory</div>
+      </div>
+      <div>
+        <div class="stat-number">Live</div>
+        <div class="stat-label">Weather Alerts</div>
+        <div class="stat-sub">OpenWeather updates</div>
       </div>
     </section>
   </div>
 
   <!-- Footer -->
   <footer class="footer-landing">
-    Made with <i class="fas fa-heart"></i> for Pakistani Farmers
+    Made with <i class="fas fa-heart"></i> for Pakistani Farmers | Kissan AI Platform
   </footer>
 
-<script src="shared.js"></script>
-<script>
-// Scroll handler
-function scrollToFeatures() {
-  const section = document.getElementById('featuresSection');
-  if (section) section.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Auto-redirect if user already has an active session
-document.addEventListener('DOMContentLoaded', function() {
-  const token = getAccessToken();
-  const farmer = getStoredFarmer();
-  if (token && farmer) {
-    console.log('Active session detected, auto-redirecting to chat.html');
-    window.location.href = 'chat.html';
+  <script src="shared.js"></script>
+  <script>
+  // Scroll handler
+  function scrollToFeatures() {
+    const section = document.getElementById('featuresSection');
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
   }
-});
 
-async function startGuestFlow() {
-  const btn = document.getElementById('getStartedBtn');
-  const btnText = document.getElementById('btnText');
-  const btnIcon = document.getElementById('btnIcon');
+  // Auto-redirect if user already has an active session
+  document.addEventListener('DOMContentLoaded', function() {
+    const token = getAccessToken();
+    const farmer = getStoredFarmer();
+    if (token && farmer) {
+      console.log('Active session detected, auto-redirecting to chat.html');
+      window.location.href = 'chat.html';
+    }
+  });
 
-  if (btn) btn.disabled = true;
-  if (btnText) btnText.textContent = 'Connecting...';
-  if (btnIcon) btnIcon.className = 'fas fa-spinner fa-spin';
+  async function startGuestFlow() {
+    const btn = document.getElementById('getStartedBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
 
-  try {
-    const res = await apiFetch('/api/auth/guest', { method: 'POST' });
-    if (!res || !res.ok) throw new Error('Guest session response invalid');
-    const data = await res.json();
-    setAuthSession(data.access_token, { user_id: data.user_id, is_guest: true, full_name: 'Guest Farmer' }, data.user_id);
-    showToast('Welcome to Kissan AI Guest Mode! 🌾', 'success');
-    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
-  } catch (err) {
-    console.warn('Backend unavailable, using instant offline guest fallback:', err);
-    setAuthSession('guest_dev_token', { user_id: 'guest_dev', is_guest: true, full_name: 'Guest Farmer' }, 'guest_dev');
-    showToast('Entering Guest Mode... 🌾', 'success');
-    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
-  } finally {
+    if (btn) btn.disabled = true;
+    if (btnText) btnText.textContent = 'Connecting...';
+    if (btnIcon) btnIcon.className = 'fas fa-spinner fa-spin';
+
+    try {
+      const res = await apiFetch('/api/auth/guest', { method: 'POST' });
+      if (!res || !res.ok) throw new Error('Guest session response invalid');
+      const data = await res.json();
+      setAuthSession(data.access_token, { user_id: data.user_id, is_guest: true, full_name: 'Guest Farmer' }, data.user_id);
+      showToast('Welcome to Kissan AI Guest Mode! 🌾', 'success');
+      setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+    } catch (err) {
+      console.warn('Backend unavailable, using offline guest fallback:', err);
+      setAuthSession('guest_dev_token', { user_id: 'guest_dev', is_guest: true, full_name: 'Guest Farmer' }, 'guest_dev');
+      showToast('Entering Guest Mode... 🌾', 'success');
+      setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+    } finally {
+      setTimeout(() => {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = 'Launch Kissan AI';
+        if (btnIcon) btnIcon.className = 'fas fa-arrow-right';
+      }, 1500);
+    }
+  }
+
+  // Interactive Tab Switcher
+  function switchTab(evt, tabId) {
+    // Hide all tab panes
+    const panes = document.querySelectorAll('.tab-pane');
+    panes.forEach(pane => pane.classList.remove('active'));
+
+    // Remove active class from all buttons
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // Show selected pane and set button active
+    document.getElementById(tabId).classList.add('active');
+    evt.currentTarget.classList.add('active');
+  }
+
+  // Interactive Chat Mock Simulation
+  const chatScenarios = {
+    wheat: [
+      { sender: 'user', text: 'Can I spray wheat pesticide today in Faisalabad?' },
+      { sender: 'bot', type: 'typing' },
+      { sender: 'bot', text: '🌾 <strong>Faisalabad Weather Spray Check:</strong><br>Current wind speed: 8 km/h (Safe). No rain forecast for 24 hours. Sowing date on file: Nov 15 (Crop is in Tillering phase). Spraying pesticide is highly recommended now to protect against aphids. Avoid spraying if wind exceeds 12 km/h.' }
+    ],
+    mandi: [
+      { sender: 'user', text: 'احمد بھائی، ملتان کی منڈی کے تازہ ریٹس کیا ہیں؟' },
+      { sender: 'bot', type: 'typing' },
+      { sender: 'bot', text: '📈 <strong>ملتان غلہ منڈی ریٹس (آج):</strong><br>• گندم (Wheat): 3,850 روپے فی من<br>• کپاس (Cotton): 8,400 روپے فی من<br>• باسمتی سپر (Rice): 7,300 روپے فی من<br><br>احمد بھائی، پچھلی بار آپ نے بتایا تھا کہ آپ کے پاس 10 من گندم اسٹاک میں ہے۔ فروخت کرنے کا یہ مناسب وقت ہو سکتا ہے۔', isUrdu: true }
+    ],
+    pest: [
+      { sender: 'user', text: 'کپاس پر سفید مکھی (whitefly) کا حملہ ہوا ہے، کیا علاج کریں؟' },
+      { sender: 'bot', type: 'typing' },
+      { sender: 'bot', text: '🐛 <strong>سفید مکھی (Whitefly) کنٹرول ایڈوائزری:</strong><br>1. فورا ً مائع سپرے جیسے Pyriproxyfen (100ml فی ایکڑ) کا استعمال کریں۔<br>2. اگر پتے پیلے ہو رہے ہیں تو مٹی میں پوٹاشیم کی مقدار بڑھائیں۔<br>3. یاد رہے، آپ کی مٹی ریتلی ہے اس لیے سپرے کے بعد آبپاشی ہلکی رکھیں۔', isUrdu: true }
+    ]
+  };
+
+  let isSimulating = false;
+  function simulateChat(scenarioId) {
+    if (isSimulating) return;
+    isSimulating = true;
+
+    const chatBody = document.getElementById('chatMockBody');
+    const typing = document.getElementById('chatMockTyping');
+    
+    // Clear chat simulation
+    chatBody.innerHTML = '';
+    
+    const messages = chatScenarios[scenarioId];
+    let msgIndex = 0;
+
+    function nextMessage() {
+      if (msgIndex >= messages.length) {
+        isSimulating = false;
+        return;
+      }
+
+      const msgData = messages[msgIndex];
+      msgIndex++;
+
+      if (msgData.type === 'typing') {
+        typing.style.display = 'flex';
+        chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(() => {
+          typing.style.display = 'none';
+          nextMessage();
+        }, 1500);
+      } else {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'chat-mock-msg ' + msgData.sender;
+        if (msgData.isUrdu) {
+          msgDiv.classList.add('chat-mock-msg-urdu');
+        }
+        msgDiv.innerHTML = msgData.text;
+        chatBody.appendChild(msgDiv);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(nextMessage, 1000);
+      }
+    }
+
+    nextMessage();
+  }
+
+  // Interactive Field Analyzer Simulator
+  const analysisData = {
+    wheat: {
+      multan: {
+        advisory: "Wheat planting in Multan is optimal from Nov 10 - Dec 10. Earlier sowing avoids late-stage heat stress. Apply first watering 22 days after sowing.",
+        price: "Rs. 3,850 per maund",
+        weather: "Optimal (Sunny, Wind 8 km/h)"
+      },
+      faisalabad: {
+        advisory: "Faisalabad zone is highly fertile for wheat. Sowing should be completed by Nov 25. Apply nitrogenous fertilizer during first irrigation.",
+        price: "Rs. 3,900 per maund",
+        weather: "Optimal (Clear, Wind 6 km/h)"
+      },
+      hyderabad: {
+        advisory: "Hyderabad wheat sowing starts slightly earlier (Nov 1 - Nov 30). Select heat-tolerant varieties like TJ-83 to prevent temperature damage.",
+        price: "Rs. 3,780 per maund",
+        weather: "Safe (Humid, Wind 10 km/h)"
+      }
+    },
+    cotton: {
+      multan: {
+        advisory: "Multan is the heart of cotton. Sowing window: May 1 - May 31. Monitor leaf-curl virus. Maintain strict insect scouting cycles.",
+        price: "Rs. 8,400 per maund",
+        weather: "Caution (High Temp, Wind 14 km/h - Delay spray)"
+      },
+      faisalabad: {
+        advisory: "Cotton sowing in Faisalabad should use BT varieties. Sowing limit: May 15. Apply first irrigation 35 days after sowing.",
+        price: "Rs. 8,150 per maund",
+        weather: "Optimal (Sunny, Wind 7 km/h)"
+      },
+      hyderabad: {
+        advisory: "Hyderabad cotton is sown early (April 15 - May 15). Soil salinity must be managed. Canal watering intervals should be 12 days.",
+        price: "Rs. 8,500 per maund",
+        weather: "Optimal (Breezy, Wind 9 km/h)"
+      }
+    },
+    rice: {
+      multan: {
+        advisory: "Basmati transplantation: June 25 - July 15. Standing water depth must be maintained at 2-3 inches for weed control.",
+        price: "Rs. 6,800 per maund",
+        weather: "Caution (High Humidity, monitor for stem borer)"
+      },
+      faisalabad: {
+        advisory: "Faisalabad Basmati Super: transplant by July 10. Zinc sulfate application is highly beneficial for tillering growth.",
+        price: "Rs. 7,400 per maund",
+        weather: "Optimal (Showers expected, postpone irrigation)"
+      },
+      hyderabad: {
+        advisory: "Hyderabad Rice (mainly IRRI Varieties): transplanting in June. Requires constant canal water flow to combat saline soil.",
+        price: "Rs. 5,900 per maund",
+        weather: "Optimal (Wind 11 km/h)"
+      }
+    }
+  };
+
+  function runSimulationAnalysis() {
+    const crop = document.getElementById('cropSelect').value;
+    const district = document.getElementById('districtSelect').value;
+    const irrigation = document.getElementById('irrigationSelect').value;
+    
+    const resultBox = document.getElementById('analyzerRight');
+    
+    // Show loader
+    resultBox.innerHTML = `
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; width:100%;">
+        <i class="fas fa-spinner fa-spin" style="font-size:40px; color:var(--primary); margin-bottom:12px;"></i>
+        <div style="font-weight:700; color:var(--text-color);">Retrieving agricultural RAG snippets...</div>
+        <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Scanning local crop calendars & SQLite memory</div>
+      </div>
+    `;
+    
     setTimeout(() => {
-      if (btn) btn.disabled = false;
-      if (btnText) btnText.textContent = 'Get Started';
-      if (btnIcon) btnIcon.className = 'fas fa-arrow-right';
-    }, 1500);
+      const data = analysisData[crop][district];
+      const cropName = crop.charAt(0).toUpperCase() + crop.slice(1);
+      const districtName = district.charAt(0).toUpperCase() + district.slice(1);
+      const irrigationName = irrigation === 'tubewell' ? 'Tube-well' : 'Canal';
+      
+      resultBox.classList.add('analyzer-result-active');
+      resultBox.innerHTML = `
+        <div class="analyzer-result-content">
+          <div class="result-header">
+            <div class="result-badge">
+              <i class="fas fa-robot"></i> Kissan AI Advisory
+            </div>
+            <div class="result-meta">RAG Grounded</div>
+          </div>
+          
+          <div style="font-size:13px; font-weight:700; color:var(--primary);">
+            Field Context: ${cropName} in ${districtName} (${irrigationName} irrigated)
+          </div>
+          
+          <div class="result-advisory">
+            "${data.advisory}"
+          </div>
+          
+          <div class="result-stats-row">
+            <div class="result-stat-card">
+              <div class="result-stat-label">Mandi Estimate</div>
+              <div class="result-stat-value">${data.price}</div>
+            </div>
+            <div class="result-stat-card">
+              <div class="result-stat-label">Weather Safety</div>
+              <div class="result-stat-value" style="font-size:12px;">${data.weather}</div>
+            </div>
+          </div>
+          
+          <div style="font-size:10px; color:var(--text-muted); border-top: 1px solid var(--glass-border); padding-top: 10px; margin-top:5px; display:flex; align-items:center; gap:6px;">
+            <i class="fas fa-info-circle"></i> Localized crop recommendation based on farmer memory profile
+          </div>
+        </div>
+      `;
+    }, 1200);
   }
-}
-</script>
+  </script>
 </body>
 </html>
