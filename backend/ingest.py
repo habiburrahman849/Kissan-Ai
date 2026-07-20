@@ -15,8 +15,9 @@ import numpy as np
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 
-RAW_DIR = pathlib.Path("data/raw_pdfs")
-OUT_DIR = pathlib.Path("data/vector_index")
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+RAW_DIR = BASE_DIR / "data" / "raw_pdfs"
+OUT_DIR = BASE_DIR / "data" / "vector_index"
 CHUNK_SIZE = 400
 CHUNK_OVERLAP = 80
 MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"

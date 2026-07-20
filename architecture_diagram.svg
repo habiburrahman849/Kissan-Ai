@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#047857;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6d28d9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#c2410c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad-gray" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#374151;stop-opacity:1" />
+    </linearGradient>
+    <filter id="drop-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <style>
+    .title { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 800; fill: #ffffff; }
+    .subtitle { font-family: 'Inter', sans-serif; font-size: 14px; fill: #9ca3af; }
+    .box-title { font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; fill: #ffffff; }
+    .box-text { font-family: 'Inter', sans-serif; font-size: 12px; fill: #e5e7eb; }
+    .label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; fill: #6b7280; text-anchor: middle; }
+    .conn-label { font-family: 'Inter', sans-serif; font-size: 10px; fill: #a3e635; font-weight: bold; }
+    .arrow { stroke: #4b5563; stroke-width: 2; fill: none; stroke-dasharray: 4, 4; }
+    .arrow-solid { stroke: #10b981; stroke-width: 2.5; fill: none; }
+  </style>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#070f0b" rx="16" />
+  
+  <!-- Outer Border -->
+  <rect x="5" y="5" width="790" height="490" fill="none" stroke="rgba(37,211,102,0.15)" stroke-width="2" rx="12" />
+
+  <!-- Title -->
+  <text x="30" y="45" class="title">KISSAN AI — System Architecture</text>
+  <text x="30" y="65" class="subtitle">MemoryAgent Track - Qwen Cloud Global AI Hackathon</text>
+
+  <!-- Frontend Box -->
+  <g transform="translate(40, 150)" filter="url(#drop-shadow)">
+    <rect width="200" height="240" fill="url(#grad-blue)" rx="12" />
+    <text x="15" y="30" class="box-title">Frontend (Web)</text>
+    <rect x="15" y="45" width="170" height="1" fill="rgba(255,255,255,0.2)" />
+    
+    <text x="15" y="70" class="box-text">⭐ Landing Page (index.html)</text>
+    <text x="15" y="95" class="box-text">⭐ Chat Panel (chat.html)</text>
+    <text x="15" y="120" class="box-text">⭐ Weather Panel (weather.html)</text>
+    <text x="15" y="145" class="box-text">⭐ Settings Panel (settings.html)</text>
+    <text x="15" y="170" class="box-text">⭐ Shared Utils (shared.js)</text>
+    
+    <rect x="15" y="195" width="170" height="30" fill="rgba(0,0,0,0.2)" rx="6" />
+    <text x="100" y="215" class="box-text" text-anchor="middle">HTML5 / Vanilla CSS &amp; JS</text>
+  </g>
+
+  <!-- FastAPI Orchestrator Box -->
+  <g transform="translate(300, 200)" filter="url(#drop-shadow)">
+    <rect width="200" height="140" fill="url(#grad-green)" rx="12" />
+    <text x="15" y="30" class="box-title">FastAPI Backend</text>
+    <rect x="15" y="45" width="170" height="1" fill="rgba(255,255,255,0.2)" />
+    <text x="15" y="70" class="box-text">🔥 Multi-Agent Orchestrator</text>
+    <text x="15" y="90" class="box-text">🔥 Memory Context Engine</text>
+    <text x="15" y="110" class="box-text">🔥 SQLite Session Manager</text>
+  </g>
+
+  <!-- SQLite Database Box -->
+  <g transform="translate(560, 310)" filter="url(#drop-shadow)">
+    <rect width="200" height="150" fill="url(#grad-purple)" rx="12" />
+    <text x="15" y="30" class="box-title">SQLite Database</text>
+    <rect x="15" y="45" width="170" height="1" fill="rgba(255,255,255,0.2)" />
+    <text x="15" y="70" class="box-text">📂 users (Profile &amp; Language)</text>
+    <text x="15" y="90" class="box-text">📂 conversations (History)</text>
+    <text x="15" y="110" class="box-text">📂 farm_events (Crop Cycles)</text>
+    <text x="15" y="130" class="box-text">📂 memories (Vector Facts)</text>
+  </g>
+
+  <!-- External API Integrations -->
+  <g transform="translate(560, 40)" filter="url(#drop-shadow)">
+    <rect width="200" height="110" fill="url(#grad-orange)" rx="12" />
+    <text x="15" y="25" class="box-title">Alibaba DashScope</text>
+    <text x="15" y="45" class="box-text">🤖 Qwen-plus LLM Engine</text>
+    <text x="15" y="65" class="box-text">🤖 RAG Synthesis</text>
+    <text x="15" y="85" class="box-text">🤖 Multilingual Translation</text>
+  </g>
+  
+  <g transform="translate(560, 170)" filter="url(#drop-shadow)">
+    <rect width="200" height="115" fill="url(#grad-gray)" rx="12" />
+    <text x="15" y="25" class="box-title">External Services</text>
+    <text x="15" y="50" class="box-text">☁️ OpenWeatherMap API</text>
+    <text x="15" y="70" class="box-text">☁️ Local FAISS RAG Index</text>
+    <text x="15" y="90" class="box-text">☁️ Sentence Transformers</text>
+  </g>
+
+  <!-- Connectors -->
+  <!-- Frontend <-> Backend -->
+  <path d="M 240 270 L 300 270" class="arrow-solid" marker-end="url(#arrow-head)" />
+  <text x="270" y="260" class="conn-label" text-anchor="middle">REST / JSON</text>
+
+  <!-- Backend <-> SQLite -->
+  <path d="M 400 340 L 400 385 L 560 385" class="arrow-solid" />
+  <text x="480" y="375" class="conn-label" text-anchor="middle">SQLAlchemy</text>
+
+  <!-- Backend <-> Qwen -->
+  <path d="M 400 200 L 400 95 L 560 95" class="arrow-solid" />
+  <text x="480" y="85" class="conn-label" text-anchor="middle">HTTPS / SDK</text>
+
+  <!-- Backend <-> External -->
+  <path d="M 500 240 L 560 240" class="arrow-solid" />
+  <text x="530" y="230" class="conn-label" text-anchor="middle">API</text>
+
+</svg>

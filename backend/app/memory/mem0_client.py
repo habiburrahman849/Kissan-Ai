@@ -29,11 +29,11 @@ class Mem0Client:
     def _user_id(self, farmer_id: int) -> str:
         return f"farmer_{farmer_id}"
 
-    def ensure_farmer(self, db: Session, farmer_id: int = 1) -> Farmer:
+    def ensure_farmer(self, db: Session, farmer_id: int) -> Farmer:
         farmer = db.get(Farmer, farmer_id)
         if farmer:
             return farmer
-        farmer = Farmer(id=farmer_id, name="Ahmad", district="Mardan", village="Rustam")
+        farmer = Farmer(id=farmer_id, name="Guest Farmer", is_guest=True)
         db.add(farmer)
         db.commit()
         db.refresh(farmer)
@@ -127,6 +127,28 @@ class Mem0Client:
 
     def apply_facts(self, db: Session, farmer_id: int, facts: dict, raw_message: str) -> None:
         farmer = self.ensure_farmer(db, farmer_id)
+        
+        # 1. Update farmer profile fields if present in facts
+        name = facts.get("name") or facts.get("farmer_name")
+        if name:
+            farmer.name = name
+        if facts.get("district"):
+            farmer.district = facts.get("district")
+        if facts.get("village"):
+            farmer.village = facts.get("village")
+        if facts.get("land_size"):
+            farmer.land_size = facts.get("land_size")
+        if facts.get("primary_crops"):
+            farmer.primary_crops = facts.get("primary_crops")
+        if facts.get("soil_type"):
+            farmer.soil_type = facts.get("soil_type")
+        if facts.get("irrigation"):
+            farmer.irrigation = facts.get("irrigation")
+        if facts.get("farming_type"):
+            farmer.farming_type = facts.get("farming_type")
+        if name or facts.get("district") or facts.get("village") or facts.get("land_size") or facts.get("primary_crops") or facts.get("soil_type") or facts.get("irrigation") or facts.get("farming_type"):
+            farmer.is_guest = False # They filled some details now
+            
         if facts.get("season_status") == "harvested":
             self.archive_active_crop(db, farmer.id)
             db.add(FarmEvent(farmer_id=farmer.id, event_type="harvest", description=raw_message))
@@ -139,10 +161,20 @@ class Mem0Client:
             .order_by(CropCycle.created_at.desc())
             .first()
         )
-        if facts.get("current_crop") and not active_crop:
-            active_crop = CropCycle(farmer_id=farmer.id, crop_name=facts["current_crop"])
-            db.add(active_crop)
-            db.flush()
+        if facts.get("current_crop"):
+            if not active_crop:
+                active_crop = CropCycle(farmer_id=farmer.id, crop_name=facts["current_crop"])
+                db.add(active_crop)
+                db.flush()
+            elif active_crop.crop_name != facts["current_crop"]:
+                active_crop.crop_name = facts["current_crop"]
+
+        # 2. Update crop cycle details if present
+        if active_crop:
+            if facts.get("variety"):
+                active_crop.variety = facts.get("variety")
+            if facts.get("sowing_date"):
+                active_crop.sowing_date = facts.get("sowing_date")
 
         event_type = "observation"
         if facts.get("last_fertilizer"):

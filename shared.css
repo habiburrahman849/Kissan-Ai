@@ -211,6 +211,65 @@ input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15)}
 .audio-wave-bar.played{opacity:1}
 .audio-duration{font-size:11px;color:var(--text-muted);min-width:32px;text-align:right;font-variant-numeric:tabular-nums}
 
+/* CITATIONS / SOURCES */
+.message-citations {
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+  font-size: 13px;
+  width: 100%;
+}
+.citations-details {
+  cursor: pointer;
+}
+.citations-details summary {
+  color: var(--primary-dark);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+  font-size: 13px;
+}
+[data-theme="dark"] .citations-details summary {
+  color: var(--accent);
+}
+.citations-details summary:hover {
+  opacity: 0.85;
+}
+.citations-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.citation-item {
+  background: var(--border-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.citation-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.citation-title i {
+  color: #ef4444;
+}
+.citation-snippet {
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.4;
+}
+
 /* MESSAGE RTL SUPPORT */
 .message[dir="rtl"]{text-align:right}
 .message[dir="rtl"] .message-time{justify-content:flex-start}

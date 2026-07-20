@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class ChatRequest(BaseModel):
     message: str = Field(min_length=1)
-    farmer_id: int = 1
+    image_data_url: str | None = None
 
 
 class Citation(BaseModel):

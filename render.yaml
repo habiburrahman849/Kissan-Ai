@@ -1,0 +1,40 @@
+# Render Blueprint — Kissan AI (FastAPI + static HTML)
+# Dashboard: New → Blueprint → connect this repo
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: kissan-ai
+    runtime: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    # Dockerfile at repo root builds frontend + backend into one service
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: AUTH_DEV_BYPASS
+        value: "false"
+      - key: ALLOW_GUEST_LOGIN
+        value: "true"
+      - key: FRONTEND_DIR
+        value: ".."
+      - key: DATABASE_URL
+        value: sqlite:///./kissan_ai_v2.db
+      - key: QWEN_API_BASE
+        value: https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+      - key: QWEN_MODEL
+        value: qwen-plus
+      - key: JWT_EXPIRE_HOURS
+        value: "168"
+      # Secrets — set once in Render Dashboard (or `sync: false` then fill UI)
+      - key: QWEN_API_KEY
+        sync: false
+      - key: OPENWEATHER_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MEM0_API_KEY
+        sync: false

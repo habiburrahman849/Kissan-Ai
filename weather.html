@@ -7,12 +7,58 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<style>
+  .weather-search-container {
+    background: rgba(30, 41, 59, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px 20px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+  .weather-search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: var(--transition);
+  }
+  .weather-search-input:focus {
+    border-color: var(--primary);
+  }
+  .weather-search-btn {
+    padding: 12px 24px;
+    background: var(--primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .weather-search-btn:hover {
+    background: var(--primary-dark);
+  }
+</style>
 </head>
 <body>
 <div class="toast-container" id="toastContainer"></div>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <div class="app-shell" id="appShell">
+<!-- Sidebar -->
 <aside class="sidebar open" id="sidebar">
 <div class="sidebar-header">
 <div class="brand"><div class="brand-icon"><i class="fas fa-seedling"></i></div><div class="brand-text">Kissan AI</div></div>
@@ -20,7 +66,7 @@
 <nav class="sidebar-nav">
 <div class="nav-section">
 <div class="nav-section-title">Main</div>
-<a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i><span>Chat</span><span class="nav-badge">3</span></a>
+<a href="chat.html" class="nav-item"><i class="fas fa-comment-dots"></i><span>Chat</span></a>
 <a href="weather.html" class="nav-item active"><i class="fas fa-cloud-sun"></i><span>Weather</span></a>
 </div>
 <div class="nav-section">
@@ -35,14 +81,15 @@
 </nav>
 <div class="sidebar-footer">
 <a href="profile.html" class="user-mini" style="text-decoration:none">
-<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Ahmad">
-<div class="user-mini-info"><div class="user-mini-name">Ahmad</div><div class="user-mini-role">Premium Farmer</div></div>
+<img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Farmer">
+<div class="user-mini-info"><div class="user-mini-name">Guest Farmer</div><div class="user-mini-role">Guest Mode</div></div>
 <i class="fas fa-chevron-right" style="color:var(--text-muted);font-size:12px"></i>
 </a>
 </div>
 <div class="sidebar-drag-handle" id="sidebarDragHandle"><button class="sidebar-arrow" id="sidebarArrow" onclick="toggleSidebar()"><i class="fas fa-chevron-left" id="sidebarArrowIcon"></i></button></div>
 </aside>
 
+<!-- Main Content -->
 <main class="main-content" id="mainContent">
 <header class="top-header">
 <div class="header-left">
@@ -59,38 +106,120 @@
 </header>
 
 <div class="content-area">
+<!-- Weather Search Bar -->
+<div class="weather-search-container">
+  <input type="text" id="weatherLocationInput" class="weather-search-input" placeholder="Enter city name (e.g. Multan, Faisalabad, Lahore)...">
+  <button class="weather-search-btn" onclick="loadWeather()">
+    <i class="fas fa-search"></i>
+    <span>Search</span>
+  </button>
+</div>
+
 <div class="weather-hero">
 <div class="weather-main">
-<div style="font-size:48px"><i class="fas fa-sun" style="color:#FFD700"></i></div>
+<div style="font-size:48px" id="weatherHeroIcon"><i class="fas fa-sun" style="color:#FFD700"></i></div>
 <div>
-<div class="weather-temp">32°C</div>
-<div class="weather-condition">Sunny with light breeze</div>
-<div class="weather-location"><i class="fas fa-map-marker-alt"></i>Mardan, Pakistan</div>
+<div class="weather-temp">--°C</div>
+<div class="weather-condition">Loading...</div>
+<div class="weather-location"><i class="fas fa-map-marker-alt"></i>Loading location...</div>
 </div>
 </div>
 <div class="weather-details">
-<div class="weather-detail-item"><div class="weather-detail-value">65%</div><div class="weather-detail-label">Humidity</div></div>
-<div class="weather-detail-item"><div class="weather-detail-value">12km/h</div><div class="weather-detail-label">Wind</div></div>
-<div class="weather-detail-item"><div class="weather-detail-value">0mm</div><div class="weather-detail-label">Rainfall</div></div>
-<div class="weather-detail-item"><div class="weather-detail-value">1012hPa</div><div class="weather-detail-label">Pressure</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">--%</div><div class="weather-detail-label">Humidity</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">--km/h</div><div class="weather-detail-label">Wind</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">--mm</div><div class="weather-detail-label">Rainfall</div></div>
+<div class="weather-detail-item"><div class="weather-detail-value">--hPa</div><div class="weather-detail-label">Pressure</div></div>
 </div>
 </div>
+
+<h3 style="margin: 28px 0 16px 0; font-size: 18px; font-weight: 700;">5-Day Forecast</h3>
 <div class="forecast-grid">
-<div class="forecast-card"><div class="forecast-day">Mon</div><div class="forecast-icon">☀️</div><div class="forecast-temp">33°</div><div class="forecast-range">28° / 35°</div><div class="forecast-rain"><i class="fas fa-tint"></i>0%</div></div>
-<div class="forecast-card"><div class="forecast-day">Tue</div><div class="forecast-icon">⛅</div><div class="forecast-temp">31°</div><div class="forecast-range">27° / 33°</div><div class="forecast-rain"><i class="fas fa-tint"></i>10%</div></div>
-<div class="forecast-card"><div class="forecast-day">Wed</div><div class="forecast-icon">🌧️</div><div class="forecast-temp">28°</div><div class="forecast-range">24° / 30°</div><div class="forecast-rain"><i class="fas fa-tint"></i>80%</div></div>
-<div class="forecast-card"><div class="forecast-day">Thu</div><div class="forecast-icon">🌦️</div><div class="forecast-temp">29°</div><div class="forecast-range">25° / 31°</div><div class="forecast-rain"><i class="fas fa-tint"></i>45%</div></div>
-<div class="forecast-card"><div class="forecast-day">Fri</div><div class="forecast-icon">☀️</div><div class="forecast-temp">34°</div><div class="forecast-range">29° / 36°</div><div class="forecast-rain"><i class="fas fa-tint"></i>0%</div></div>
+<!-- Filled dynamically -->
 </div>
+
+<h3 style="margin: 28px 0 16px 0; font-size: 18px; font-weight: 700;">Farming Weather Advisories</h3>
 <div class="advisory-list">
-<div class="advisory-card"><div class="advisory-icon green"><i class="fas fa-leaf"></i></div><div class="advisory-content"><div class="advisory-title">🌾 Wheat: Ideal Sowing Conditions</div><div class="advisory-text">Soil moisture at 65%. Perfect for rice transplantation! Consider covering your harvested crops.</div><div class="advisory-time">Updated 2 hours ago</div></div></div>
-<div class="advisory-card"><div class="advisory-icon orange"><i class="fas fa-exclamation-triangle"></i></div><div class="advisory-content"><div class="advisory-title">🍅 Tomato: Delay Spraying</div><div class="advisory-text">Wind speed expected to exceed 15km/h. Postpone pesticide application until tomorrow morning.</div><div class="advisory-time">Updated 4 hours ago</div></div></div>
-<div class="advisory-card"><div class="advisory-icon blue"><i class="fas fa-tint"></i></div><div class="advisory-content"><div class="advisory-title">💧 Irrigation: Skip Today</div><div class="advisory-text">Rain expected at 4 PM. Save water and let nature do the work. Resume normal schedule tomorrow.</div><div class="advisory-time">Updated 1 hour ago</div></div></div>
+<!-- Filled dynamically -->
 </div>
 </div>
 </main>
 </div>
 
 <script src="shared.js"></script>
+<script>
+async function loadWeather() {
+  const input = document.getElementById('weatherLocationInput');
+  let loc = input ? input.value.trim() : '';
+  if (!loc) {
+    const profile = getStoredFarmer();
+    loc = (profile && profile.location_district) ? profile.location_district : 'Multan';
+  }
+
+  try {
+    const res = await apiFetch(`/api/weather?location=${encodeURIComponent(loc)}`);
+    if (!res || !res.ok) throw new Error('Failed to fetch weather');
+    const data = await res.json();
+
+    // Update main weather card
+    document.querySelector('.weather-temp').textContent = `${data.temperature}°C`;
+    document.querySelector('.weather-condition').textContent = data.condition;
+    document.querySelector('.weather-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.location}`;
+    
+    // Update weather icon if available
+    const heroIcon = document.getElementById('weatherHeroIcon');
+    if (heroIcon) {
+      heroIcon.innerHTML = `<img src="https://openweathermap.org/img/wn/${data.icon}@2x.png" width="80" height="80">`;
+    }
+
+    // Update details
+    const details = document.querySelectorAll('.weather-detail-value');
+    if (details.length >= 4) {
+      details[0].textContent = `${data.humidity}%`;
+      details[1].textContent = `${data.wind_kmh} km/h`;
+      details[2].textContent = `${data.rain_mm} mm`;
+      details[3].textContent = `${data.pressure} hPa`;
+    }
+
+    // Update forecast
+    const forecastGrid = document.querySelector('.forecast-grid');
+    if (forecastGrid && data.forecast) {
+      forecastGrid.innerHTML = data.forecast.map(f => `
+        <div class="forecast-card">
+          <div class="forecast-day">${f.day}</div>
+          <div class="forecast-icon">
+            <img src="https://openweathermap.org/img/wn/${f.icon}.png" width="36" height="36" style="vertical-align:middle;">
+          </div>
+          <div class="forecast-temp">${f.temp}°</div>
+          <div class="forecast-range">${f.min}° / ${f.max}°</div>
+          <div class="forecast-rain"><i class="fas fa-tint"></i> ${f.rain_percent}%</div>
+        </div>
+      `).join('');
+    }
+
+    // Update advisories
+    const advisoryList = document.querySelector('.advisory-list');
+    if (advisoryList && data.advisories) {
+      advisoryList.innerHTML = data.advisories.map(a => `
+        <div class="advisory-card">
+          <div class="advisory-icon ${a.tone}"><i class="fas ${a.type === 'spray' ? 'fa-wind' : 'fa-tint'}"></i></div>
+          <div class="advisory-content">
+            <div class="advisory-title">${a.title}</div>
+            <div class="advisory-text">${a.text}</div>
+            <div class="advisory-time">Updated just now</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+  } catch (err) {
+    console.error('Failed to load weather:', err);
+    showToast('Unable to load weather. Showing local fallback.', 'error');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadWeather();
+});
+</script>
 </body>
 </html>

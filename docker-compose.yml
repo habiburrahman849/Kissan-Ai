@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  kissan-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - QWEN_API_KEY=${QWEN_API_KEY}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - MEM0_API_KEY=${MEM0_API_KEY}
+    restart: always

@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  kissan-ai-backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - QWEN_API_KEY=${QWEN_API_KEY}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+      - MEM0_API_KEY=${MEM0_API_KEY}
+      - JWT_SECRET=${JWT_SECRET:-kissan-ai-dev-secret-change-me}
+    restart: unless-stopped

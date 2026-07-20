@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-router = APIRouter(tags=["health"])
+router = APIRouter(prefix="/health", tags=["health"])
 
 
-@router.get("/health")
-def health():
+@router.get("")
+def health_check():
     return {"status": "ok", "service": "kissan-ai-memoryagent"}

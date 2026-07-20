@@ -3,508 +3,352 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Kissan AI - Sign In</title>
+<title>Kissan AI - Smart Farming Assistant for Pakistani Farmers</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
-  body.login-shell {
+  html {
+    scroll-behavior: smooth;
+  }
+  body.landing-body {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, rgba(37, 211, 102, 0.15), transparent 45%),
+                radial-gradient(circle at bottom right, rgba(52, 183, 241, 0.1), transparent 45%),
+                #070f0b;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-x: hidden;
+  }
+
+  .landing-container {
+    width: min(1120px, 92%);
+    margin: 0 auto;
+    padding: 24px 0 60px 0;
+  }
+
+  /* Header Brand */
+  .header-brand {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at top left, rgba(37, 211, 102, 0.12), transparent 45%),
-                radial-gradient(circle at bottom right, rgba(52, 183, 241, 0.08), transparent 40%),
-                #070f0b;
-    overflow: auto;
-  }
-  
-  .auth-container {
-    width: min(480px, 92%);
-    background: rgba(30, 41, 59, 0.65);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 28px;
-    padding: 36px;
-    box-shadow: var(--shadow-xl), 0 30px 70px rgba(0, 0, 0, 0.4);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    gap: 12px;
+    padding: 20px 0;
   }
 
-  .auth-container::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(37, 211, 102, 0.06), transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+  .brand-logo-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
   }
 
-  .auth-step {
-    position: relative;
-    z-index: 1;
+  .brand-logo-text {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff, #a3e635);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tagline-badge {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  /* Hero Section */
+  .hero-section {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .auth-step.fade-out {
-    opacity: 0;
-    transform: translateY(-12px);
-    pointer-events: none;
-  }
-
-  .auth-step.hidden {
-    display: none;
-  }
-
-  .brand-header {
+    align-items: center;
     text-align: center;
-    margin-bottom: 8px;
+    margin: 40px 0 50px 0;
+    gap: 24px;
   }
 
-  .brand-icon {
-    width: 64px;
-    height: 64px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  .hero-title {
+    font-size: clamp(32px, 5vw, 54px);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 800px;
+    letter-spacing: -1px;
+  }
+
+  .hero-title span {
+    color: var(--primary);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(16px, 2vw, 19px);
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 650px;
+    line-height: 1.6;
+  }
+
+  /* Farmer Image Display */
+  .hero-image-card {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    height: 320px;
+    border-radius: 28px;
+    overflow: hidden;
+    margin: 12px 0 24px 0;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.2), rgba(7, 15, 11, 0.9)),
+                url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: flex-end;
+    padding: 32px;
+  }
+
+  .hero-image-overlay {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 16px 24px;
     border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+  }
+
+  .hero-image-overlay i {
+    font-size: 28px;
+    color: var(--primary);
+  }
+
+  /* Big Green Get Started Button */
+  .btn-get-started {
+    width: min(360px, 90%);
+    padding: 18px 36px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 28px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 10px 24px rgba(37, 211, 102, 0.3);
-    margin-bottom: 16px;
-    animation: float 4s ease-in-out infinite;
+    gap: 14px;
+    text-decoration: none;
   }
 
-  .brand-title {
+  .btn-get-started:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(37, 211, 102, 0.55);
+  }
+
+  .btn-get-started:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  /* Feature Cards */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 30px;
+  }
+
+  .feature-card {
+    background: rgba(30, 41, 59, 0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 28px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(37, 211, 102, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 26px;
-    font-weight: 800;
-    color: white;
-    letter-spacing: -0.5px;
-    margin-bottom: 6px;
   }
 
-  .brand-subtitle {
+  .feature-icon.weather {
+    background: rgba(52, 183, 241, 0.15);
+    color: #38bdf8;
+  }
+
+  .feature-icon.pest {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+  }
+
+  .feature-icon.mandi {
+    background: rgba(37, 211, 102, 0.15);
+    color: #4ade80;
+  }
+
+  .feature-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .feature-desc {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.65);
     line-height: 1.5;
   }
 
-  .btn-primary {
-    width: 100%;
-    padding: 14px 24px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 16px;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25);
-  }
-
-  .btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
-  }
-
-  .btn-primary:active {
-    transform: translateY(0);
-  }
-
-  .btn-google {
-    width: 100%;
-    padding: 14px 24px;
-    background: white;
-    color: #1a1a2e;
-    border: none;
-    border-radius: 16px;
-    font-size: 15px;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .btn-google:hover {
-    background: #f8fafc;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .btn-google img {
-    width: 18px;
-    height: 18px;
-  }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin: 4px 0;
-  }
-
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  /* Form Elements for Profile completion */
-  .form-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
+  /* Footer */
+  .footer-landing {
     text-align: center;
-    margin-bottom: 2px;
-  }
-
-  .form-subtitle {
-    font-size: 13px;
-    color: var(--text-secondary);
-    text-align: center;
-    line-height: 1.5;
-    margin-bottom: 8px;
-  }
-
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
-
-  .form-group-full {
-    grid-column: span 2;
-  }
-
-  .input-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .input-shell {
-    position: relative;
-  }
-
-  .input-shell input, .input-shell select {
-    width: 100%;
-    padding: 10px 14px;
-    background: rgba(15, 23, 42, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    font-size: 14px;
-    color: white;
-    font-family: inherit;
-    transition: var(--transition);
-  }
-
-  .input-shell select {
-    appearance: none;
-    cursor: pointer;
-  }
-
-  .input-shell input:focus, .input-shell select:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(15, 23, 42, 0.6);
-    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.15);
-  }
-
-  .input-shell::after {
-    display: none;
-  }
-
-  .select-shell::after {
-    content: '\f107';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-    font-size: 13px;
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-  }
-
-  .footer-notice {
-    text-align: center;
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
-    margin-top: 12px;
+    padding: 24px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 13px;
   }
 
-  .footer-notice a {
-    color: var(--primary);
-    text-decoration: none;
-  }
-
-  .footer-notice a:hover {
-    text-decoration: underline;
+  .footer-landing i {
+    color: #ef4444;
   }
 </style>
 </head>
-<body class="login-shell">
-<div class="toast-container" id="toastContainer"></div>
+<body class="landing-body">
+  <div class="toast-container" id="toastContainer"></div>
 
-<div class="auth-container" id="authContainer">
-  <!-- STEP 1: LOGIN -->
-  <div class="auth-step" id="loginStep">
-    <div class="brand-header">
-      <div class="brand-icon"><i class="fas fa-seedling"></i></div>
-      <h1 class="brand-title">Kissan AI</h1>
-      <p class="brand-subtitle">Smart farming assistant for Pakistani farmers. Local weather warnings, pest management, and mandi prices in one place.</p>
-    </div>
-    
-    <div style="display:flex; flex-direction:column; gap:12px;">
-      <button class="btn-primary" onclick="startAuthFlow('guest')">
-        <i class="fas fa-user-circle"></i>
-        <span>Continue as Guest</span>
-      </button>
-      
-      <button class="btn-google" id="googleBtn" onclick="startAuthFlow('google')">
-        <svg class="google-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        <span class="google-text">Continue with Google</span>
-      </button>
-    </div>
+  <div class="landing-container">
+    <!-- Header -->
+    <header class="header-brand">
+      <div class="brand-logo-icon"><i class="fas fa-seedling"></i></div>
+      <div>
+        <div class="brand-logo-text">Kissan AI</div>
+        <div class="tagline-badge">Smart farming assistant for Pakistani farmers</div>
+      </div>
+    </header>
 
-    <div class="footer-notice">
-      Made with <i class="fas fa-heart" style="color:var(--error)"></i> for Pakistani Farmers
-    </div>
-  </div>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">Your Personal <span>AI Farming Expert</span> in Urdu & English</h1>
+      <p class="hero-subtitle">Instant localized agricultural advice, pest diagnosis, market rates, and weather warnings right on your phone.</p>
 
-  <!-- STEP 2: PROFILE COMPLETION -->
-  <div class="auth-step hidden" id="profileStep">
-    <div>
-      <h2 class="form-title">Complete Your Profile</h2>
-      <p class="form-subtitle">Fill in your farming details to enable custom weather alerts, local crop advisory, and accurate mandi signals.</p>
-    </div>
-
-    <form id="profileForm" onsubmit="submitProfileForm(event)" style="display:flex; flex-direction:column; gap:14px;">
-      <div class="form-grid">
-        <div class="form-group-full">
-          <label class="input-label" for="regName">Full Name</label>
-          <div class="input-shell">
-            <input type="text" id="regName" placeholder="e.g. Ahmad Khan" required>
-          </div>
-        </div>
-
-        <div class="form-group-full">
-          <label class="input-label" for="regPhone">Phone Number</label>
-          <div class="input-shell">
-            <input type="tel" id="regPhone" placeholder="e.g. +92 300 1234567" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regDistrict">District</label>
-          <div class="input-shell">
-            <input type="text" id="regDistrict" placeholder="e.g. Mardan" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regVillage">Village</label>
-          <div class="input-shell">
-            <input type="text" id="regVillage" placeholder="e.g. Rustam" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regLand">Land Size</label>
-          <div class="input-shell">
-            <input type="text" id="regLand" placeholder="e.g. 5 Acres" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regCrops">Primary Crops</label>
-          <div class="input-shell">
-            <input type="text" id="regCrops" placeholder="e.g. Wheat, Cotton, Rice" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regSoil">Soil Type</label>
-          <div class="input-shell select-shell">
-            <select id="regSoil" required>
-              <option value="" disabled selected>Select Soil</option>
-              <option value="Sandy Loam">Sandy Loam</option>
-              <option value="Clay Loam">Clay Loam</option>
-              <option value="Silt Clay">Silt Clay</option>
-              <option value="Loamy">Loamy</option>
-              <option value="Clay">Clay</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="input-label" for="regIrrigation">Irrigation Type</label>
-          <div class="input-shell select-shell">
-            <select id="regIrrigation" required>
-              <option value="" disabled selected>Select Irrigation</option>
-              <option value="Canal & Tube Well">Canal & Tube Well</option>
-              <option value="Canal">Canal</option>
-              <option value="Tube Well">Tube Well</option>
-              <option value="Drip System">Drip System</option>
-              <option value="Rain-fed">Rain-fed</option>
-            </select>
+      <!-- Visual Card -->
+      <div class="hero-image-card">
+        <div class="hero-image-overlay">
+          <i class="fas fa-mobile-alt"></i>
+          <div>
+            <div style="font-weight:700; font-size:15px; color:white;">Pakistani Farmer Assistant</div>
+            <div style="font-size:12px; color:rgba(255,255,255,0.7);">Supports Urdu, Hinglish & English voice notes</div>
           </div>
         </div>
       </div>
 
-      <button type="submit" class="btn-primary" style="margin-top:8px;">
-        <i class="fas fa-check-circle"></i>
-        <span>Save & Enter Kissan AI</span>
+      <!-- ONE BIG GREEN BUTTON -->
+      <button class="btn-get-started" id="getStartedBtn" onclick="startGuestFlow()">
+        <span id="btnText">Get Started</span>
+        <i class="fas fa-arrow-right" id="btnIcon"></i>
       </button>
-    </form>
+    </section>
+
+    <!-- 3 Feature Cards -->
+    <section class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon weather"><i class="fas fa-cloud-sun-rain"></i></div>
+        <div class="feature-title">Weather Alerts</div>
+        <div class="feature-desc">Real-time localized rain, humidity, and frost warnings tailored for your village and crop irrigation needs.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon pest"><i class="fas fa-bug"></i></div>
+        <div class="feature-title">Pest Management</div>
+        <div class="feature-desc">Upload photos or voice notes of damaged leaves for instant AI diagnosis and recommended treatments.</div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon mandi"><i class="fas fa-chart-line"></i></div>
+        <div class="feature-title">Mandi Prices</div>
+        <div class="feature-desc">Daily price updates across Punjab, Sindh & KP grain markets to get maximum profits for your harvest.</div>
+      </div>
+    </section>
   </div>
-</div>
+
+  <!-- Footer -->
+  <footer class="footer-landing">
+    Made with <i class="fas fa-heart"></i> for Pakistani Farmers
+  </footer>
 
 <script src="shared.js"></script>
 <script>
-let authType = 'guest';
-
-async function startAuthFlow(type) {
-  authType = type;
-  if (type === 'google') {
-    const btn = document.getElementById('googleBtn');
-    btn.querySelector('.google-text').textContent = 'Connecting...';
+// Auto-redirect if user already has an active session
+document.addEventListener('DOMContentLoaded', function() {
+  const token = getAccessToken();
+  const farmer = getStoredFarmer();
+  if (token && farmer) {
+    console.log('Active session detected, auto-redirecting to chat.html');
+    window.location.href = 'chat.html';
   }
-  
-  // Wait a short bit to mock connection, then fetch the profile to check completeness
-  setTimeout(async () => {
-    try {
-      const response = await fetch('/api/farmers/me?farmer_id=1');
-      if (!response.ok) throw new Error('Failed to get profile');
-      const profile = await response.json();
-      
-      if (profile.is_complete) {
-        showToast('Welcome back! 🌾', 'success');
-        setTimeout(() => { window.location.href = 'chat.html'; }, 800);
-      } else {
-        // Transition to profile form
-        showToast('Please complete your profile to continue!', 'success');
-        
-        // Prefill values
-        document.getElementById('regName').value = profile.name === 'Ahmad' ? '' : (profile.name || '');
-        document.getElementById('regPhone').value = profile.phone === '+92 300 1234567' ? '' : (profile.phone || '');
-        document.getElementById('regDistrict').value = profile.district === 'Mardan' ? '' : (profile.district || '');
-        document.getElementById('regVillage').value = profile.village === 'Rustam' ? '' : (profile.village || '');
-        document.getElementById('regLand').value = profile.land_size || '';
-        document.getElementById('regCrops').value = profile.primary_crops || '';
-        document.getElementById('regSoil').value = profile.soil_type || '';
-        document.getElementById('regIrrigation').value = profile.irrigation || '';
-        
-        transitionStep('loginStep', 'profileStep');
-      }
-    } catch (err) {
-      console.error(err);
-      showToast('Error connecting to local server.', 'error');
-      if (type === 'google') {
-        document.getElementById('googleBtn').querySelector('.google-text').textContent = 'Continue with Google';
-      }
-    }
-  }, 1000);
-}
+});
 
-function transitionStep(fromId, toId) {
-  const fromEl = document.getElementById(fromId);
-  const toEl = document.getElementById(toId);
-  fromEl.classList.add('fade-out');
-  
-  setTimeout(() => {
-    fromEl.classList.add('hidden');
-    fromEl.classList.remove('fade-out');
-    toEl.classList.remove('hidden');
-    toEl.style.opacity = '0';
-    toEl.style.transform = 'translateY(12px)';
-    
-    // Trigger layout paint
-    toEl.offsetHeight;
-    
-    toEl.style.transition = 'all 0.3s ease';
-    toEl.style.opacity = '1';
-    toEl.style.transform = 'translateY(0)';
-  }, 300);
-}
+async function startGuestFlow() {
+  const btn = document.getElementById('getStartedBtn');
+  const btnText = document.getElementById('btnText');
+  const btnIcon = document.getElementById('btnIcon');
 
-async function submitProfileForm(event) {
-  event.preventDefault();
-  
-  const payload = {
-    name: document.getElementById('regName').value.trim(),
-    phone: document.getElementById('regPhone').value.trim(),
-    district: document.getElementById('regDistrict').value.trim(),
-    village: document.getElementById('regVillage').value.trim(),
-    land_size: document.getElementById('regLand').value.trim(),
-    primary_crops: document.getElementById('regCrops').value.trim(),
-    soil_type: document.getElementById('regSoil').value,
-    irrigation: document.getElementById('regIrrigation').value,
-    farming_type: 'Conventional'
-  };
-  
-  // Validation checks: do not allow default values to bypass completion
-  if (payload.name.toLowerCase() === 'ahmad' || 
-      payload.phone === '+92 300 1234567' || 
-      payload.district.toLowerCase() === 'mardan' || 
-      payload.village.toLowerCase() === 'rustam') {
-    showToast('Please enter your own details, not the demo placeholders!', 'error');
-    return;
-  }
-  
+  if (btn) btn.disabled = true;
+  if (btnText) btnText.textContent = 'Connecting...';
+  if (btnIcon) btnIcon.className = 'fas fa-spinner fa-spin';
+
   try {
-    const response = await fetch('/api/farmers/me?farmer_id=1', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    
-    if (!response.ok) throw new Error('Failed to update profile');
-    showToast('Profile completed successfully! 🌾', 'success');
-    setTimeout(() => { window.location.href = 'chat.html'; }, 1000);
+    const res = await apiFetch('/api/auth/guest', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Guest Farmer' })
+    }, 2, 5000);
+
+    if (!res || !res.ok) throw new Error('Guest session response invalid');
+    const data = await res.json();
+    setAuthSession(data.access_token, data.farmer, data.user_id);
+    showToast('Starting Kissan AI Guest Mode... 🌾', 'success');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 400);
   } catch (err) {
-    console.error(err);
-    showToast('Failed to save profile on server.', 'error');
+    console.warn('Backend unavailable, using instant offline guest fallback:', err);
+    // Fallback: Store guest session locally so user is never blocked
+    setAuthSession('guest_dev_token', { name: 'Guest Farmer', is_guest: true, id: 1 }, '1');
+    showToast('Entering Guest Mode... 🌾', 'success');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 400);
+  } finally {
+    setTimeout(() => {
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = 'Get Started';
+      if (btnIcon) btnIcon.className = 'fas fa-arrow-right';
+    }, 1500);
   }
 }
 </script>

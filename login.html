@@ -1,13 +1,365 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=index.html">
-    <script type="text/javascript">
-        window.location.href = "index.html"
-    </script>
-    <title>Redirecting...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kissan AI - Sign In</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body.login-shell {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, rgba(37, 211, 102, 0.12), transparent 45%),
+                radial-gradient(circle at bottom right, rgba(52, 183, 241, 0.08), transparent 40%),
+                #070f0b;
+    overflow: auto;
+  }
+  
+  .auth-container {
+    width: min(450px, 92%);
+    background: rgba(30, 41, 59, 0.65);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 36px;
+    box-shadow: var(--shadow-xl), 0 30px 70px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .auth-step {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .auth-step.hidden {
+    display: none;
+  }
+
+  .brand-header {
+    text-align: center;
+  }
+
+  .brand-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    box-shadow: 0 10px 24px rgba(37, 211, 102, 0.3);
+    margin-bottom: 12px;
+  }
+
+  .brand-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+
+  .brand-subtitle {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 14px;
+    color: white;
+    outline: none;
+    transition: var(--transition);
+  }
+
+  .input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.15);
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-submit:hover {
+    background: var(--primary-dark);
+  }
+
+  .btn-guest {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-guest:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .toggle-auth {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 8px;
+  }
+
+  .toggle-auth a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .toggle-auth a:hover {
+    text-decoration: underline;
+  }
+</style>
 </head>
-<body>
-    If you are not redirected, <a href="index.html">click here</a>.
+<body class="login-shell">
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="auth-container">
+  <!-- SIGN IN STEP -->
+  <div class="auth-step" id="loginStep">
+    <div class="brand-header">
+      <div class="brand-icon"><i class="fas fa-seedling"></i></div>
+      <h1 class="brand-title">Kissan AI</h1>
+      <p class="brand-subtitle">Smart farming assistant for Pakistani farmers</p>
+    </div>
+
+    <form onsubmit="submitLogin(event)" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="input-group">
+        <label class="input-label" for="loginEmail">Email Address</label>
+        <input type="email" class="input-field" id="loginEmail" placeholder="user@email.com" required>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="loginPassword">Password</label>
+        <input type="password" class="input-field" id="loginPassword" placeholder="Enter password" required>
+      </div>
+
+      <button type="submit" class="btn-submit" id="loginSubmitBtn">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>Sign In</span>
+      </button>
+    </form>
+
+    <div class="divider" style="text-align:center; color:rgba(255,255,255,0.25); font-size:12px;">OR</div>
+
+    <button class="btn-guest" onclick="startGuestFlow()">
+      <i class="fas fa-user-circle"></i>
+      <span>Continue as Guest</span>
+    </button>
+
+    <div class="toggle-auth">
+      Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- SIGN UP STEP -->
+  <div class="auth-step hidden" id="registerStep">
+    <div class="brand-header">
+      <div class="brand-icon"><i class="fas fa-user-plus"></i></div>
+      <h1 class="brand-title">Create Account</h1>
+      <p class="brand-subtitle">Save your crops and conversation history</p>
+    </div>
+
+    <form onsubmit="submitRegister(event)" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="input-group">
+        <label class="input-label" for="regName">Full Name (Optional)</label>
+        <input type="text" class="input-field" id="regName" placeholder="e.g. Ali Khan">
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="regEmail">Email Address</label>
+        <input type="email" class="input-field" id="regEmail" placeholder="user@email.com" required>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="regPassword">Password</label>
+        <input type="password" class="input-field" id="regPassword" placeholder="Minimum 6 characters" minlength="6" required>
+      </div>
+
+      <button type="submit" class="btn-submit" id="regSubmitBtn">
+        <i class="fas fa-check-circle"></i>
+        <span>Sign Up</span>
+      </button>
+    </form>
+
+    <div class="toggle-auth">
+      Already have an account? <a href="#" onclick="showSignIn()">Sign In</a>
+    </div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+function showSignUp() {
+  document.getElementById('loginStep').classList.add('hidden');
+  document.getElementById('registerStep').classList.remove('hidden');
+}
+
+function showSignIn() {
+  document.getElementById('registerStep').classList.add('hidden');
+  document.getElementById('loginStep').classList.remove('hidden');
+}
+
+async function startGuestFlow() {
+  try {
+    const res = await apiFetch('/api/auth/guest', { method: 'POST' });
+    if (!res || !res.ok) throw new Error('Guest login failed');
+    const data = await res.json();
+    setAuthSession(data.access_token, { user_id: data.user_id, is_guest: true, full_name: 'Guest Farmer' }, data.user_id);
+    showToast('Entering Guest Mode... 🌾', 'success');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+  } catch (err) {
+    showToast('Failed to connect. Entering local guest fallback.', 'error');
+    setAuthSession('guest_dev_token', { user_id: 'guest_dev', is_guest: true, full_name: 'Guest Farmer' }, 'guest_dev');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+  }
+}
+
+async function submitLogin(event) {
+  event.preventDefault();
+  const btn = document.getElementById('loginSubmitBtn');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await apiFetch('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
+
+    if (!res) {
+      showToast('Please check your connection', 'error');
+      return;
+    }
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showToast(err.detail || 'Invalid email or password', 'error');
+      return;
+    }
+
+    const data = await res.json();
+    setAuthSession(data.access_token, { user_id: data.user_id, is_guest: false }, data.user_id);
+    showToast('Welcome back! 🌾', 'success');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+  } catch (err) {
+    showToast('Server connection failed', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function submitRegister(event) {
+  event.preventDefault();
+  const btn = document.getElementById('regSubmitBtn');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value.trim();
+
+  if (password.length < 6) {
+    showToast('Password must be 6+ characters', 'error');
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await apiFetch('/api/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email: email,
+        password: password,
+        full_name: name
+      })
+    });
+
+    if (!res) {
+      showToast('Please check your connection', 'error');
+      return;
+    }
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showToast(err.detail || 'Registration failed', 'error');
+      return;
+    }
+
+    const data = await res.json();
+    setAuthSession(data.access_token, { user_id: data.user_id, is_guest: false, full_name: name }, data.user_id);
+    showToast('Registered successfully! 🌾', 'success');
+    setTimeout(() => { window.location.href = 'chat.html'; }, 500);
+  } catch (err) {
+    showToast('Server connection failed', 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// Auto redirect if already logged in
+document.addEventListener('DOMContentLoaded', () => {
+  const token = getAccessToken();
+  const farmer = getStoredFarmer();
+  if (token && farmer) {
+    window.location.href = 'chat.html';
+  }
+});
+</script>
 </body>
 </html>

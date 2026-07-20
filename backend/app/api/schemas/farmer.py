@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class FarmerProfile(BaseModel):
     id: int
-    name: str
+    name: str | None = None
     district: str | None = None
     village: str | None = None
     preferred_language: str = "ur"
@@ -14,6 +14,8 @@ class FarmerProfile(BaseModel):
     soil_type: str | None = None
     irrigation: str | None = None
     farming_type: str | None = None
+    avatar_url: str | None = None
+    is_guest: bool = False
     current_memory: dict = {}
     is_complete: bool = False
 
