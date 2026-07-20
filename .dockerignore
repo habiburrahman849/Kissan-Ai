@@ -9,14 +9,12 @@
 **/.pytest_cache
 **/*.log
 backend/.env
-backend/kissan_ai.db
 backend/*.db
 backend/.venv
-# PDFs not needed at runtime when vector_index is pre-built (keeps image smaller)
+# PDFs not needed at runtime when vector_index is pre-built
 backend/data/raw_pdfs
 **/node_modules
 HACKATHON_ANALYSIS.txt
 PROFESSOR_PROJECT_DISCUSSION.txt
-architecture_diagram.svg
 *.md
 !README.md

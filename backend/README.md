@@ -1,34 +1,29 @@
-# Kissan AI MemoryAgent Backend
+# Kissan AI Backend
 
-Website-first backend for the Kissan AI dual-brain assistant.
+FastAPI service for the MemoryAgent demo. Frontend files live in repo `static/` and are served by `app.main`.
 
-## Run locally
+## Local run
 
-```powershell
-cd backend
+```bash
+# from backend/
 python -m venv .venv
-.\\.venv\\Scripts\\Activate.ps1
+# Windows: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+copy .env.example .env   # then fill keys
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Open:
-
-- Website: http://127.0.0.1:8000/chat.html
+- Site: http://127.0.0.1:8000/
+- Chat: http://127.0.0.1:8000/chat.html
 - API docs: http://127.0.0.1:8000/docs
+- Health: http://127.0.0.1:8000/api/health
 
-## Current MVP
+`FRONTEND_DIR` defaults to `../static` (relative to `backend/`).
 
-- Website chat endpoint: `POST /api/chat/message`
-- Local farmer memory stored in SQLite
-- Crop cycle start/harvest memory logic
-- Document upload registry for future RAG indexing
-- Qwen-compatible client with a mock Urdu response mode when credentials are not set
-- Mem0 cloud memory search/save when `MEM0_API_KEY` is configured
-- OpenWeatherMap-backed weather page when `OPENWEATHER_API_KEY` is configured
+## Production (Render)
 
-## Production swap-ins
+Use the **root** `Dockerfile` + `render.yaml`. Render sets `PORT`; uvicorn binds to `0.0.0.0:$PORT`.
 
-- Replace local memory facade with hosted Mem0 in `app/memory/mem0_client.py`
-- Replace seed retriever with LangChain + Qdrant/Chroma in `app/rag/retriever.py`
-- Set Qwen credentials in `backend/.env`
+Auth: guest mode + email/password (Clerk removed).
+Weather: OpenWeatherMap when `OPENWEATHER_API_KEY` is set.
+LLM: Qwen when `QWEN_API_KEY` is set; otherwise offline fallback.

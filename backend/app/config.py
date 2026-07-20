@@ -5,14 +5,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
+# backend/ is parents[1] of config.py (app/config.py → backend)
+BACKEND_DIR = Path(__file__).resolve().parents[1]
+REPO_ROOT = BACKEND_DIR.parent
 
 
 class Settings(BaseSettings):
     app_name: str = "Kissan AI MemoryAgent"
     environment: str = "development"
     database_url: str = "sqlite:///./kissan_ai_v2.db"
-    # Relative to backend/ — ".." = repo root (HTML/CSS/JS). Docker/Render use this.
-    frontend_dir: str = ".."
+    # Relative to backend/ — default is ../static (repo static/ folder)
+    frontend_dir: str = "../static"
+    # Also accept absolute path via FRONTEND_DIR env if needed
+    port: int = 8000
+
     qwen_api_base: str | None = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
     qwen_api_key: str | None = None
     qwen_model: str = "qwen-plus"
@@ -46,19 +52,25 @@ class Settings(BaseSettings):
 
     @property
     def frontend_path(self) -> Path:
-        return Path(__file__).resolve().parents[1] / self.frontend_dir
+        """Resolve static frontend directory (HTML/CSS/JS)."""
+        raw = (self.frontend_dir or "../static").strip()
+        path = Path(raw)
+        if path.is_absolute():
+            return path
+        # Relative paths are from backend/
+        return (BACKEND_DIR / path).resolve()
 
     @property
     def database_url_resolved(self) -> str:
         if self.database_url.startswith("sqlite:///./"):
             db_name = self.database_url.replace("sqlite:///./", "")
-            abs_path = (Path(__file__).resolve().parents[1] / db_name).resolve().as_posix()
+            abs_path = (BACKEND_DIR / db_name).resolve().as_posix()
             return f"sqlite:///{abs_path}"
-        elif self.database_url.startswith("sqlite:///"):
+        if self.database_url.startswith("sqlite:///"):
             db_path = self.database_url.replace("sqlite:///", "")
             path_obj = Path(db_path)
             if not path_obj.is_absolute():
-                abs_path = (Path(__file__).resolve().parents[1] / path_obj).resolve().as_posix()
+                abs_path = (BACKEND_DIR / path_obj).resolve().as_posix()
                 return f"sqlite:///{abs_path}"
         return self.database_url
 

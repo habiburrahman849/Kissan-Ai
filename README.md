@@ -65,6 +65,46 @@ graph TD
 
 ---
 
+## 📁 Project structure (Render-ready)
+
+```
+kissan-ai/
+├── backend/                 # Python / FastAPI
+│   ├── app/
+│   │   ├── main.py          # Entry point (serves API + static/)
+│   │   ├── config.py
+│   │   ├── models.py
+│   │   ├── db.py
+│   │   ├── qwen_client.py
+│   │   ├── memory_engine.py
+│   │   ├── language_detector.py
+│   │   ├── agents.py
+│   │   ├── weather_service.py
+│   │   └── api/routes/      # auth, chat, weather, health
+│   ├── data/
+│   │   ├── raw_pdfs/
+│   │   └── vector_index/    # FAISS index (commit for deploy)
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── .env                 # NOT in git (see .env.example)
+├── static/                  # Frontend served by FastAPI
+│   ├── index.html
+│   ├── chat.html
+│   ├── login.html
+│   ├── weather.html
+│   ├── shared.js
+│   ├── shared.css
+│   └── ...
+├── Dockerfile               # Root image used by Render
+├── render.yaml              # Render Blueprint
+├── docker-compose.yml
+├── LICENSE                  # MIT
+├── .gitignore
+└── README.md
+```
+
+---
+
 ## 🚀 How to Run
 
 ### Prerequisites
@@ -79,11 +119,12 @@ graph TD
    cd kissan-ai
    ```
 
-2. Configure environment variables in `backend/.env`:
+2. Configure environment variables in `backend/.env` (copy from `backend/.env.example`):
    ```bash
-   # Add your Qwen API key here
    QWEN_API_KEY=your_dashscope_api_key
    OPENWEATHER_API_KEY=your_openweathermap_key
+   FRONTEND_DIR=../static
+   PORT=8000
    ```
 
 3. Setup virtual environment and run the backend:
@@ -94,18 +135,19 @@ graph TD
    pip install -r requirements.txt
    ```
 
-4. Index the PDFs (Build FAISS vector database):
+4. Index the PDFs (only if `data/vector_index/` is missing):
    ```bash
    python ingest.py
    ```
 
 5. Run the FastAPI development server:
    ```bash
-   uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   # or: python -m app.main   # respects PORT env
    ```
 
 6. Open the Web Application:
-   * **Login / Onboarding**: [http://127.0.0.1:8000/index.html](http://127.0.0.1:8000/index.html)
+   * **Login / Onboarding**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
    * **Main Chat Interface**: [http://127.0.0.1:8000/chat.html](http://127.0.0.1:8000/chat.html)
    * **Interactive Weather**: [http://127.0.0.1:8000/weather.html](http://127.0.0.1:8000/weather.html)
 
@@ -113,10 +155,10 @@ graph TD
 
 ## ☁️ Deploy to Render (hackathon demo)
 
-One Docker web service serves **FastAPI + static HTML/CSS/JS**.
+One Docker web service serves **FastAPI + `static/`**.
 
 ### 1. Push this repo to GitHub
-Ensure `backend/data/vector_index/` (`index.faiss`, `chunks.json`) is committed so the image does not re-run full PDF ingest.
+Ensure `backend/data/vector_index/` (`index.faiss`, `chunks.json`) and `static/` are committed.
 
 ### 2. Create the service
 **Option A — Blueprint (recommended)**  
@@ -136,6 +178,7 @@ Ensure `backend/data/vector_index/` (`index.faiss`, `chunks.json`) is committed 
 | `OPENWEATHER_API_KEY` | your OpenWeather key |
 | `JWT_SECRET` | long random string (or leave Blueprint `generateValue`) |
 | `ENVIRONMENT` | `production` |
+| `FRONTEND_DIR` | `../static` |
 | `AUTH_DEV_BYPASS` | `false` |
 | `ALLOW_GUEST_LOGIN` | `true` |
 

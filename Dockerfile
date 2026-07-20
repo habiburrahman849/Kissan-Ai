@@ -1,7 +1,9 @@
 # Kissan AI — production image for Render / Docker
+# Structure:
+#   /workspace/backend  — FastAPI app
+#   /workspace/static   — HTML/CSS/JS served by FastAPI
 FROM python:3.10-slim
 
-# System libs needed by faiss / numpy
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libgomp1 \
@@ -9,20 +11,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /workspace
 
-# Install Python deps first (better layer cache)
+# Install Python deps first (layer cache)
 COPY backend/requirements.txt /workspace/backend/requirements.txt
 RUN pip install --no-cache-dir -r /workspace/backend/requirements.txt
 
-# App code + static frontend (served by FastAPI)
+# Backend + pre-built FAISS index
 COPY backend/ /workspace/backend/
-COPY *.html /workspace/
-COPY *.css /workspace/
-COPY *.js /workspace/
+
+# Frontend (must be under static/ at repo root)
+COPY static/ /workspace/static/
 
 WORKDIR /workspace/backend
 
 # Pre-built FAISS index is copied with backend/data/vector_index.
-# Only re-run ingest if the index is missing (saves long build + model download).
+# Only re-run ingest if the index is missing.
 RUN if [ ! -f data/vector_index/index.faiss ] || [ ! -f data/vector_index/chunks.json ]; then \
       echo "Vector index missing — running ingest.py"; \
       python ingest.py; \
@@ -34,7 +36,7 @@ RUN if [ ! -f data/vector_index/index.faiss ] || [ ! -f data/vector_index/chunks
 ENV PORT=8000
 ENV ENVIRONMENT=production
 ENV AUTH_DEV_BYPASS=false
-ENV FRONTEND_DIR=..
+ENV FRONTEND_DIR=../static
 
 EXPOSE 8000
 

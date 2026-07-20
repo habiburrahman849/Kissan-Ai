@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   kissan-ai:
@@ -8,7 +8,11 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - PORT=8000
+      - ENVIRONMENT=production
+      - FRONTEND_DIR=../static
       - QWEN_API_KEY=${QWEN_API_KEY}
       - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
       - MEM0_API_KEY=${MEM0_API_KEY}
-    restart: always
+      - JWT_SECRET=${JWT_SECRET:-kissan-ai-dev-secret-change-me-32b+}
+    restart: unless-stopped
